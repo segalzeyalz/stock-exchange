@@ -6,14 +6,14 @@ import CSS from './SearchBar.css';
 class SearchBar extends Component {
     render(){
         return (<div className={CSS.SearchContainer}>
-                    <h1>SearchContainer</h1>
+                    <input onKeyDown={(e)=>this.props.onKeyDown(e)} type="text" placeholder="Search.." className={CSS.SearchInput}/>
                 </div>)
     }
 }
   
   const mapDispatchToProps = dispatch => {
     return {
-      onKeyPress: (e) => dispatch({type:actionTypes.FILTER_AVAILABLE_STOCKS, val:e.target.value}),
+      onKeyDown: (e) => dispatch({type:actionTypes.FILTER_AVAILABLE_STOCKS, val:e.target.value}),
     }
 }
 export default connect(null, mapDispatchToProps)(SearchBar);
