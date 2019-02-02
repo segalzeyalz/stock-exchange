@@ -20,15 +20,17 @@ class Portfolio extends Component {
                            <TableCell>startOfCommerce</TableCell>
                            <TableCell>currentPrice</TableCell>
                            <TableCell>sell</TableCell>
+                           <TableCell>sell</TableCell>
+                           hand-holding-usd
                        </TableHead>
                      <TableBody>
                        {stocks.map(elem=> {
                            return <TableRow>
-                               <TableCell>{elem.symbol}</TableCell>
-                           <TableCell>{elem.name}</TableCell>
-                           <TableCell>{elem.startOfCommerce}</TableCell>
-                           <TableCell>{elem.currentPrice}</TableCell>
-                           </TableRow>
+                                    <TableCell>{elem.symbol}</TableCell>
+                                    <TableCell>{elem.name}</TableCell>
+                                    <TableCell>{elem.startOfCommerce}</TableCell>
+                                    <TableCell>{elem.currentPrice}</TableCell>
+                                 </TableRow>
                         }
                     )}</TableBody>
                    </Table>
