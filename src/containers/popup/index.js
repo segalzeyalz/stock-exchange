@@ -14,7 +14,7 @@ class Popup extends Component {
     }
     
     buy(){
-        let {api,symbol,amount, funds, price} = this.props;
+        let { api,symbol,amount, funds, price } = this.props;
         axios.post(`${api}/market/buy`,{
             "stockSymbol": symbol,
             "stockQuantity":amount
@@ -25,7 +25,8 @@ class Popup extends Component {
                 profit: 0,
                 purchasePrice: this.props.price,
                 quantity: this.props.amount,
-                symbol: this.props.symbol})}
+                symbol: this.props.symbol})
+            }
           )
     }
     componentDidMount(){

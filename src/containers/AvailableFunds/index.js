@@ -14,6 +14,7 @@ import axios from 'axios';
 class AvailableFunds extends Component {
     portData;
     componentDidMount(){
+        //Getting all available stocks
         let { onReload, api } = this.props;
         let self = this;
         fetch(`${api}/portfolio`)
@@ -36,6 +37,7 @@ class AvailableFunds extends Component {
           .catch(function (error) {
             console.log(error);
           });
+          //Refresh every 5 seconds
           setInterval(()=>{
             axios.get(`${api}/management/refresh`).then(
                 ()=>{
@@ -43,6 +45,12 @@ class AvailableFunds extends Component {
                     "searchString": this.props.filterVal
                   })
               .then(function (response) {
+                let stockArr = response.data.stocks;
+                let myStock=self.portData.myStocks;
+                //Filter all stocks that bought
+                for(let i=0; i<myStock.length; i++){
+                    stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
+                }
                 onReload(response.data.stocks);
               })})
           },5000)
