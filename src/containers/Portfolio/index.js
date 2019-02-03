@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as UIActions from './../../constants/UIActions';
 import * as stocksAction from './../../constants/stockActions';
 import UpdatePointer from './../../constants/UpdatePointer';
 import { connect } from 'react-redux';
@@ -8,11 +7,22 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import axios from 'axios';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import CSS from './Portfolio.css';
 
 class Portfolio extends Component {
     portData;
+    constructor(){
+        super();
+        this.sell = this.sell.bind(this);
+    }
+    sell(symbol){
+        let {api} = this.props;
+        axios.post(`${api}/market/sell`,{
+            "stockSymbol": symbol,
+          })
+    }
     componentDidMount(){
         let { api } = this.props;
         let self = this;
@@ -20,9 +30,9 @@ class Portfolio extends Component {
         .then(response => response.json())
         .then((portData) => {
             self.portData = portData;
+            //get all stocks symbol for only one api call
             let params = 'market/?symbol=';
             for (let i=0;i<portData.myStocks.length; i++) {
-                //get all stocks symbol for only one api call
                params+=portData.myStocks[i].symbol + ',';
             }
             fetch(`${api}/${params}`)
@@ -52,6 +62,7 @@ class Portfolio extends Component {
       },5000)
             
     }
+
     render(){
         let { stocks } = this.props;
         return (<div className={CSS.Portfolio}>
@@ -85,7 +96,7 @@ class Portfolio extends Component {
                                     </TableCell>
                                     <TableCell>{elem.startOfCommerce}</TableCell>
                                     <TableCell>
-                                        <SvgIcon className={CSS.Clicked} onClick={()=>this.props.onOpen(elem.symbol, elem.name, elem.quantity)}>
+                                        <SvgIcon className={CSS.Clicked} onClick={()=>this.sell(elem.symbol)}>
                                             <path d="M9.56 8.1c-1.6-.51-2.66-.71-2.66-1.88 0-.83.72-1.62 2.1-1.62 1.59 0 2.1.88 2.1 1.94H13c0-1.79-1.17-3.09-3-3.44V1H8v2.11c-1.58.32-3 1.37-3 3.12 0 2.25 1.78 2.8 4 3.52 1.88.61 2.25 1.04 2.25 2.09 0 .9-.67 1.56-2.25 1.56-1.2 0-2.25-.84-2.25-2.06h-2c0 1.88 1.38 3.2 3.25 3.56V17h2v-2.07c2.04-.29 3.2-1.49 3.2-3.1 0-1.87-.94-2.87-3.64-3.73z"/>
                                         </SvgIcon>
                                     </TableCell>
@@ -107,7 +118,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      onOpen: (symbol, name, quantity) => dispatch({type:UIActions.OPEN_POPUP, Btn:"Sell", symbol:symbol, name:name, quantity:quantity}),
       getPortfolio: (stocks) => dispatch({type:stocksAction.UPDATE_PORTFOLIO, stocks:stocks}),
       sortPortfolio: (param) => dispatch({type:stocksAction.SORT_PORTFOLIO_STOCKS, filterBy: param}),
     }

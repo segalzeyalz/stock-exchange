@@ -46,7 +46,6 @@ class AvailableFunds extends Component {
                 onReload(response.data.stocks);
               })})
           },5000)
-
     }
     render(){
         let { stocks, onFilter } = this.props;

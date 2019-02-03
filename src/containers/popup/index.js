@@ -11,20 +11,22 @@ class Popup extends Component {
     constructor(){
         super();
         this.buy = this.buy.bind(this);
-        this.sell = this.sell.bind(this);
     }
+    
     buy(){
-        let {api,symbol,amount} = this.props;
+        let {api,symbol,amount, funds, price} = this.props;
         axios.post(`${api}/market/buy`,{
             "stockSymbol": symbol,
             "stockQuantity":amount
-          })
-    }
-    sell(){
-        let {api,symbol} = this.props;
-        axios.post(`${api}/market/sell`,{
-            "stockSymbol": symbol,
-          })
+          }).then(()=>{
+              this.props.buy(funds-price*amount, {
+                currentPrice: this.props.price,
+                name: this.props.name,
+                profit: 0,
+                purchasePrice: this.props.price,
+                quantity: this.props.amount,
+                symbol: this.props.symbol})}
+          )
     }
     componentDidMount(){
         setInterval(()=>{
@@ -41,21 +43,21 @@ class Popup extends Component {
                .then((price) => {this.props.updatePrice(price.stocks.length && price.stocks[0].currentPrice)})
     }
     render(){
-        let {price, amount, funds, btn, symbol, name, quantity} = this.props;
+        let {price, amount, funds, btn, symbol, name} = this.props;
         if(this.props.popupOpen){
             return  (<div className={CSS.Popup}>
                         <div className={CSS.Inner_popup}>
                             <SimetricX closePopup={this.props.closePopup}/>
                             <h2 className={CSS.Title}>{btn} {symbol} - {name}</h2>
-                            {btn==="Buy" &&<div className={CSS.FormContainer}>
+                              <div className={CSS.FormContainer}>
                                 <label>Amount: </label>
                                 <input type="number" onChange={(e)=>this.props.updateAmount(e.target.value)}/>
-                            </div>}
+                            </div>
                             <h3>Current Price: {price}</h3>
-                            <h3>Total Price: {parseFloat(price*(amount|| parseFloat(quantity)))}</h3>
+                            <h3>Total Price: {parseFloat(price*amount)}</h3>
                             <div className={CSS.ButtonsContainer}>
-                                <Button onClick={btn==="Buy" ?this.buy():this.sell()}
-                                    disabled={btn==="Buy" && parseFloat(price*amount)>funds}
+                                <Button onClick={this.buy()}
+                                    disabled={parseFloat(price*amount)>funds}
                                     variant="contained" color="primary">
                                     {btn}
                                 </Button>
@@ -85,7 +87,7 @@ class Popup extends Component {
       const mapDispatchToProps = dispatch => {
         return {
             closePopup: ()=> dispatch({type: UIActions.CLOSE_POPUP}),
-            buy: (funds)=>dispatch({type:stockActions.BUY_STOCK, funds:funds}),
+            buy: (funds, newStock)=>dispatch({type:stockActions.BUY_STOCK, funds:funds, newStock:newStock}),
             updateAmount: (amount)=>dispatch({type:UIActions.UPDATE_DETAILS, amount:amount}),
             updatePrice: (price)=>dispatch({type:UIActions.UPDATE_PRICE, price:price})
         }

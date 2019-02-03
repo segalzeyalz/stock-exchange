@@ -1,4 +1,5 @@
-import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE, RESET } from './../constants/stockActions';
+import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE, RESET,
+  BUY_STOCK } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
@@ -115,6 +116,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 stocks:sortPortfolioBy,
                 lastPortfolioSortedBy:lastPortfolioSortedBy
+              }
+            case BUY_STOCK:
+              return {
+                ...state,
+                stocks:[...state.stocks, action.newStock],
+                funds:action.funds
               }
              default:
               return {...state}
