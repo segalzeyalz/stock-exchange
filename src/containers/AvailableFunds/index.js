@@ -8,13 +8,21 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import axios from 'axios';
 
 class AvailableFunds extends Component {
     componentDidMount(){
-        // fetch(API + DEFAULT_QUERY)
-        // .then(response => response.json())
-        // .then(data => this.setState({ hits: data.hits }));
-
+        let {onReload} = this.props;
+        console.log(`${this.props.api}/market/search`)
+        axios.post(`${this.props.api}/market/search`,{
+            "searchString": ""
+          })
+          .then(function (response) {
+            onReload(response.data.stocks);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
     render(){
         let { stocks, onFilter } = this.props;
@@ -47,13 +55,16 @@ class AvailableFunds extends Component {
 }
   
 const mapStateToProps = state => {
+    console.log(state.stocks.api)
     return {
-        stocks:state.stocks.filteredStocks
+        stocks:state.stocks.filteredStocks,
+        api:state.stocks.api
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
       onFilter: (name) => dispatch({type:actionTypes.SORT_AVAILABLE_STOCKS, filterBy:name}),
+      onReload: (availableStocks) => dispatch({type:actionTypes.UPDATE_AVAILABLE, availableStocks:availableStocks}),
     }
 }
 

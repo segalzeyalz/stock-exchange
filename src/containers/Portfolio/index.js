@@ -12,7 +12,7 @@ import CSS from './Portfolio.css';
 
 class Portfolio extends Component {
     componentDidMount(){
-        fetch('http://int.v2x.foresightauto.com/stock-exchange-service/portfolio')
+        fetch(`${this.props.api}/portfolio`)
         .then(response => response.json())
         .then(data => this.props.getPortfolio(data));
     }
@@ -56,7 +56,8 @@ class Portfolio extends Component {
   
 const mapStateToProps = state => {
     return {
-        stocks:state.stocks.stocks
+        stocks:state.stocks.stocks,
+        api:state.stocks.api
     }
 }
 

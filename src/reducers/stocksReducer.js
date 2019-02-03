@@ -1,8 +1,10 @@
-import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO } from './../constants/stockActions';
+import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
-      "lastAvaiableSortedBy":""
+      "lastAvaiableSortedBy":"",
+      "availableStocks":[],
+      "api":"http://int.v2x.foresightauto.com/stock-exchange-service"
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,9 +31,24 @@ const reducer = (state = initialState, action) => {
               }
               let sortAvailableBy;
               if(lastAvaiableSortedBy.direction){
-                sortAvailableBy = [...filteredStocks.sort((a,b)=> {return a[action.filterBy]-b[action.filterBy]})]
+                sortAvailableBy = [...filteredStocks.sort((a,b)=> {
+                  if(a[action.filterBy]>b[action.filterBy]){
+                      return 1;}
+                    else if(a[action.filterBy]<b[action.filterBy]){
+                      return -1;} else{
+                        return 0
+                      }
+                  })
+                ]
               }else{
-                sortAvailableBy = [...filteredStocks.sort((a,b)=> {return b[action.filterBy]-a[action.filterBy]})]
+                sortAvailableBy = [...filteredStocks.sort((a,b)=> {
+                  if(a[action.filterBy]<b[action.filterBy]){
+                      return 1;}
+                    else if(a[action.filterBy]>b[action.filterBy]){
+                      return -1;} else{
+                        return 0
+                      }
+                  })]
               }
               return {
                 ...state,
@@ -40,12 +57,16 @@ const reducer = (state = initialState, action) => {
               }
             case UPDATE_PORTFOLIO:
               let newStocks = action.stocks.myStocks
-              console.log(newStocks)
-            return {
-              ...state,
-              stocks:newStocks
-            }
-
+              return {
+                ...state,
+                stocks:newStocks
+              }
+            case UPDATE_AVAILABLE:
+              return {
+                ...state,
+                availableStocks:action.availableStocks,
+                filteredStocks:action.availableStocks
+              }
     }
 
     return state;
