@@ -28,7 +28,7 @@ class Portfolio extends Component {
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<data.stocks.length; i++) {
-                    debugger;
+                    //add more parameters
                     self.portData.myStocks[i].name = data.stocks[i].name;
                     self.portData.myStocks[i].currentPrice = data.stocks[i].currentPrice
                     self.portData.myStocks[i].startOfCommerce = data.stocks[i].startOfCommerce                    
