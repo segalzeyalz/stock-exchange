@@ -6,9 +6,6 @@ import * as stockActions from './../../constants/stockActions';
 import { connect } from 'react-redux';
 
 class Popup extends Component {
-    componentDidMount(){
-        
-    }
     constructor(){
         super();
         this.buy = this.buy.bind(this);
@@ -16,6 +13,11 @@ class Popup extends Component {
     buy(){
         console.log("buy")
     }
+    componentDidMount(){
+        let {api,symbol} = this.props;
+        fetch(`${api}/market?symbol=${symbol}`)
+        .then(response => response.json())
+        .then((portData) => {console.log(portData)})}
     render(){
         if(this.props.popupOpen){
             return  (<div className={CSS.Popup}>
@@ -44,7 +46,8 @@ class Popup extends Component {
             symbol: state.UI.symbol,
             btn:state.UI.Btn,
             amoutn: state.UI.amoutn,
-            funds:state.stocks.funds
+            funds:state.stocks.funds,
+            api:state.stocks.api
         };
       };
       

@@ -61,7 +61,6 @@ const reducer = (state = initialState, action) => {
               }
             case UPDATE_PORTFOLIO:
               let newStocks = action.stocks.myStocks;
-              console.log(action.stocks)
               return {
                 ...state,
                 stocks:[...newStocks],
