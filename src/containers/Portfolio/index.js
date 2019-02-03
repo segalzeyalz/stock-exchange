@@ -75,7 +75,12 @@ class Portfolio extends Component {
                                     <TableCell>{elem.quantity}</TableCell>
                                     <TableCell>{elem.purchasePrice}</TableCell>
                                     <TableCell>{elem.currentPrice}</TableCell>
-                                    <TableCell>{elem.profit}</TableCell>
+                                    <TableCell>
+                                        <div className={CSS.Trend}>
+                                            <span className={elem.profit>0? CSS.Positive:CSS.Negative}>{elem.profit}</span>
+                                            <span className={elem.profit>0? CSS.PositiveArrow:CSS.NegativeArrow}></span>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>{elem.startOfCommerce}</TableCell>
                                     <TableCell>
                                         <SvgIcon>

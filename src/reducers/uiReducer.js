@@ -1,4 +1,4 @@
-import {OPEN_POPUP} from './../constants/UIActions';
+import {OPEN_POPUP, CLOSE_POPUP} from './../constants/UIActions';
 
 const initialState = {
     popupOpen:''
@@ -9,6 +9,10 @@ const reducer = (state = initialState, action) => {
         case OPEN_POPUP:
             return {...state,
                     popupOpen:action.popupId}
+        case CLOSE_POPUP:
+                return {
+                    popupOpen:''
+                }
         default:
             return {...state}
     }

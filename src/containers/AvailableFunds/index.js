@@ -12,7 +12,7 @@ import axios from 'axios';
 
 class AvailableFunds extends Component {
     componentDidMount(){
-        let {onReload, api, filterVal} = this.props;
+        let { onReload, api } = this.props;
         axios.post(`${api}/market/search`,{
             "searchString": ""
           })

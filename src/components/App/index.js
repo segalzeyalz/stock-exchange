@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Header from './../Header';
 import SearchBar from './../../containers/SearchBar';
-import AvailableFunds from './../../containers/AvailableFunds'
+import AvailableFunds from './../../containers/AvailableFunds';
+import Popup from './../../containers/popup'
 import Portfolio from './../../containers/Portfolio';
-import ResetBtn from './../../containers/ResetBtn'
+import ResetBtn from './../../containers/ResetBtn';
 import CSS from './App.css';
+
 
 class App extends Component {
   render() {
@@ -15,6 +17,7 @@ class App extends Component {
         <AvailableFunds />
         <Portfolio />
         <ResetBtn/>
+        <Popup/>
       </div>
     );
   }

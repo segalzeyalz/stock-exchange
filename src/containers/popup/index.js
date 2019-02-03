@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 class Popup extends Component {
     render(){
+        if(this.props.popupOpen){
                 return  (<div className={CSS.Popup}>
                            <div className={CSS.Inner_popup}>
                                 <SimetricX closePopup={this.props.closePopup}/>
@@ -17,13 +18,17 @@ class Popup extends Component {
                                 <div className={CSS.ButtonsContainer}>
                                     <button className={CSS.Button} onClick={(e)=>console.log(e)}>Save</button></div>
                                 </div>
-                       </div>
+                       </div>)}else{
+                           return null
+                       }
             
     }
 }
 
     const mapStateToProps = state => {
+        console.log(state)
         return {
+            popupOpen:state.UI.popupOpen
         };
       };
       

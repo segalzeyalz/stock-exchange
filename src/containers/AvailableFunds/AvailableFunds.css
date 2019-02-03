@@ -1,0 +1,6 @@
+:local(.Positive){
+    color:greenyellow;
+}
+:local(.Negative){
+    color:red;
+}

@@ -1,0 +1,30 @@
+:local(.Positive){
+    color:green;
+
+}
+:local(.PositiveArrow){
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid green;
+}
+:local(.NegativeArrow){
+  width: 0; 
+  height: 0; 
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #f00;
+}
+:local(.Trend){
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
+}
+
+:local(.Negative){
+    color:red;
+}
