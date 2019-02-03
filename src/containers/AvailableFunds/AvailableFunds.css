@@ -1,6 +1,8 @@
-:local(.Positive){
-    color:greenyellow;
-}
-:local(.Negative){
-    color:red;
+:local(.Center){
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
 }

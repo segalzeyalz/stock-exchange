@@ -1,9 +1,15 @@
 :local(.SearchContainer){
     width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
 }
 :local(.SearchInput){
     border: 1px solid #ccc;  
-    width: 130px;
+    width: 200px;
     /* animation on focus */
     transition: width 1s ease-in-out;
     /* search icon */
