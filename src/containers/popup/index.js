@@ -10,7 +10,7 @@ class Popup extends Component {
                 return  (<div className={CSS.Popup}>
                            <div className={CSS.Inner_popup}>
                                 <SimetricX closePopup={this.props.closePopup}/>
-                                <h1 className={CSS.Title}>Save</h1>
+                                <h2 className={CSS.Title}>{this.props.btn} {this.props.symbol} - {this.props.name}</h2>
                                 <div className={CSS.FormContainer}>
                                     <label>Project Name: </label>
                                     <input type="text" onChange={(event)=>console.log(event)}/>
@@ -26,9 +26,11 @@ class Popup extends Component {
 }
 
     const mapStateToProps = state => {
-        console.log(state)
         return {
-            popupOpen:state.UI.popupOpen
+            popupOpen:state.UI.popupOpen,
+            name:state.UI.name,
+            symbol: state.UI.symbol,
+            btn:state.UI.Btn
         };
       };
       

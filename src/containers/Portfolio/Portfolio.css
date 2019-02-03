@@ -1,6 +1,5 @@
 :local(.Positive){
     color:green;
-
 }
 :local(.PositiveArrow){
   width: 0; 
@@ -30,4 +29,12 @@
 }
 :local(.Clicked){
     cursor: pointer;
+}
+:local(.Center){
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
 }

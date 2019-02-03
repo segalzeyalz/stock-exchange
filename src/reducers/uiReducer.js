@@ -1,17 +1,27 @@
 import {OPEN_POPUP, CLOSE_POPUP} from './../constants/UIActions';
 
 const initialState = {
-    popupOpen:''
+    popupOpen:'',
+    name:'',
+    symbol:'',
+    Btn:''
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case OPEN_POPUP:
             return {...state,
-                    popupOpen:true}
+                    popupOpen:true,
+                    name:action.name,
+                    symbol:action.symbol,
+                    Btn:action.Btn
+                }
         case CLOSE_POPUP:
                 return {
-                    popupOpen:''
+                    popupOpen:'',
+                    name:'',
+                    symbol:'',
+                    Btn:''
                 }
         default:
             return {...state}
