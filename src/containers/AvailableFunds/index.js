@@ -12,13 +12,26 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import axios from 'axios';
 
 class AvailableFunds extends Component {
+    portData;
     componentDidMount(){
         let { onReload, api } = this.props;
+        let self = this;
+        fetch(`${api}/portfolio`)
+        .then(response => response.json())
+        .then((portData) => {
+            self.portData = portData
+        })
         axios.post(`${api}/market/search`,{
             "searchString": ""
           })
           .then(function (response) {
-            onReload(response.data.stocks);
+            let stockArr = response.data.stocks;
+            let myStock=self.portData.myStocks;
+            //Filter all stocks that bought
+            for(let i=0; i<myStock.length; i++){
+                stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
+            }
+            onReload(stockArr);
           })
           .catch(function (error) {
             console.log(error);
