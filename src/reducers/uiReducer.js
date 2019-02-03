@@ -8,7 +8,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case OPEN_POPUP:
             return {...state,
-                    popupOpen:action.popupId}
+                    popupOpen:true}
         case CLOSE_POPUP:
                 return {
                     popupOpen:''

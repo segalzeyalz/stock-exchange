@@ -28,3 +28,6 @@
 :local(.Negative){
     color:red;
 }
+:local(.Clicked){
+    cursor: pointer;
+}

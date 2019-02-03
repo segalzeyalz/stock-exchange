@@ -6,3 +6,6 @@
     align-content: stretch;
     align-items: center;
 }
+:local(.Clicked){
+    cursor: pointer;
+}
