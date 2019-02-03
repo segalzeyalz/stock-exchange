@@ -5,6 +5,7 @@ const initialState = {
       "lastAvaiableSortedBy":"",
       "availableStocks":[],
       "api":"http://int.v2x.foresightauto.com/stock-exchange-service",
+      "filterVal":""
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 filteredStocks:filteredStocks,
-                lastAvaiableSortedBy:""
+                lastAvaiableSortedBy:"",
+                filterVal:action.val
             }
             case SORT_AVAILABLE_STOCKS:
               let {lastAvaiableSortedBy} = state;

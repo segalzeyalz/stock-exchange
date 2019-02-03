@@ -12,7 +12,7 @@ import axios from 'axios';
 
 class AvailableFunds extends Component {
     componentDidMount(){
-        let {onReload,api} = this.props;
+        let {onReload, api, filterVal} = this.props;
         axios.post(`${api}/market/search`,{
             "searchString": ""
           })
@@ -24,8 +24,9 @@ class AvailableFunds extends Component {
           });
           setInterval(()=>{
             axios.get(`${api}/management/refresh`).then(
-                ()=>{axios.post(`${api}/market/search`,{
-                    "searchString": ""
+                ()=>{console.log(filterVal)
+                    axios.post(`${api}/market/search`,{
+                    "searchString": this.props.filterVal
                   })
               .then(function (response) {
                 onReload(response.data.stocks);
@@ -64,10 +65,10 @@ class AvailableFunds extends Component {
 }
   
 const mapStateToProps = state => {
-    console.log(state.stocks.api)
     return {
         stocks:state.stocks.filteredStocks,
-        api:state.stocks.api
+        api:state.stocks.api,
+        filterVal: state.stocks.filterVal
     }
 }
 const mapDispatchToProps = dispatch => {
