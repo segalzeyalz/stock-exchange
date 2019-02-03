@@ -11,9 +11,9 @@
 :local(.NegativeArrow){
   width: 0; 
   height: 0; 
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 7px solid #f00;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #f00;
 }
 :local(.Trend){
     display: flex;

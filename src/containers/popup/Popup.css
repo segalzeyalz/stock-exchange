@@ -14,10 +14,10 @@
 
 :local(.Inner_popup){
     position: absolute;
-    left: 33%;
-    right: 33%;
-    top: 33%;
-    bottom: 33%;
+    left: 25%;
+    right: 25%;
+    top: 25%;
+    bottom: 25%;
     margin: auto;
     background: white;
     align-items: center;

@@ -39,7 +39,7 @@ class AvailableFunds extends Component {
         let { stocks, onFilter } = this.props;
         return (<div className={CSS.AvailableFunds}>
                     <div className={CSS.Center}>
-                        <h2>My Available Funds</h2>
+                        <h2>My Available Funds: {this.props.funds}</h2>
                     </div>
                    <Table>
                        <TableHead>
@@ -73,7 +73,8 @@ const mapStateToProps = state => {
     return {
         stocks:state.stocks.filteredStocks,
         api:state.stocks.api,
-        filterVal: state.stocks.filterVal
+        filterVal: state.stocks.filterVal,
+        funds:state.stocks.funds
     }
 }
 const mapDispatchToProps = dispatch => {
