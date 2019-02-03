@@ -3,18 +3,18 @@ import Header from './../Header';
 import SearchBar from './../../containers/SearchBar';
 import AvailableFunds from './../../containers/AvailableFunds'
 import Portfolio from './../../containers/Portfolio';
-import ResetBtn from './../ResetBtn'
+import ResetBtn from './../../containers/ResetBtn'
 import CSS from './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className={CSS.App}>
         <Header />
         <SearchBar />
         <AvailableFunds />
         <Portfolio />
-        {/* <ResetBtn/> */}
+        <ResetBtn/>
       </div>
     );
   }

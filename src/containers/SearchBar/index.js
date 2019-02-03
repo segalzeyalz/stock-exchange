@@ -9,7 +9,7 @@ class SearchBar extends Component {
         return (<div className={CSS.SearchContainer}>
                     <input onChange={(e)=>this.props.onChange(e)} type="text" placeholder="Search.." className={CSS.SearchInput}/>
                 </div>)
-    }
+    }c
 }
    const mapStateToProps = state => {
         return {

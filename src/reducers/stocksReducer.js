@@ -1,4 +1,4 @@
-import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE } from './../constants/stockActions';
+import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE, RESET } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    let { stocks, availableStocks, filteredStocks } = state;
+    let { availableStocks, filteredStocks } = state;
     switch (action.type) {
         case FILTER_AVAILABLE_STOCKS:
             //filter from stock 
@@ -67,9 +67,15 @@ const reducer = (state = initialState, action) => {
                 availableStocks:action.availableStocks,
                 filteredStocks:action.availableStocks
               }
+            case RESET:
+              return {...state,
+                availableStocks:state.stocks,
+
+              }
+             default:
+              return {...state}
     }
 
-    return state;
 };
 
 export default reducer;
