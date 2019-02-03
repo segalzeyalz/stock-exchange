@@ -11,10 +11,32 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import CSS from './Portfolio.css';
 
 class Portfolio extends Component {
+    portData;
     componentDidMount(){
-        fetch(`${this.props.api}/portfolio`)
+        let { api } = this.props;
+        let self = this;
+        fetch(`${api}/portfolio`)
         .then(response => response.json())
-        .then(data => this.props.getPortfolio(data));
+        .then((portData) => {
+            self.portData = portData;
+            console.log(portData.myStocks)
+            let params = '/market/?symbol=';
+            for (let i=0;i<portData.myStocks.length; i++) {
+               params=params+portData.myStocks[i].symbol + ',';
+            }
+            fetch(`${api}${params}`)
+            .then(res=> res.json())
+            .then((data)=>{ 
+                for (let i=0;i<data.stocks.length; i++) {
+                    debugger;
+                    self.portData.myStocks[i].name = data.stocks[i].name;
+                    self.portData.myStocks[i].currentPrice = data.stocks[i].currentPrice
+                    self.portData.myStocks[i].startOfCommerce = data.stocks[i].startOfCommerce                    
+             }
+             this.props.getPortfolio(self.portData)
+                })
+       });
+            
     }
     render(){
         let { stocks } = this.props;
@@ -26,7 +48,7 @@ class Portfolio extends Component {
                            <TableCell>Name</TableCell>
                            <TableCell>Purchased quantity</TableCell>
                            <TableCell>Purchase price</TableCell>
-                           <TableCell>startOfCommerce</TableCell>
+                           <TableCell></TableCell>
                            <TableCell>currentPrice</TableCell>
                            <TableCell>Profit</TableCell>
                            <TableCell>sell</TableCell>

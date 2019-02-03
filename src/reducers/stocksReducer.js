@@ -4,7 +4,7 @@ const initialState = {
       "filteredStocks":[],
       "lastAvaiableSortedBy":"",
       "availableStocks":[],
-      "api":"http://int.v2x.foresightauto.com/stock-exchange-service"
+      "api":"http://int.v2x.foresightauto.com/stock-exchange-service",
 };
 
 const reducer = (state = initialState, action) => {
@@ -56,10 +56,11 @@ const reducer = (state = initialState, action) => {
                 lastAvaiableSortedBy:lastAvaiableSortedBy
               }
             case UPDATE_PORTFOLIO:
-              let newStocks = action.stocks.myStocks
+              let newStocks = action.stocks.myStocks;
+              console.log([...newStocks])
               return {
                 ...state,
-                stocks:newStocks
+                stocks:[...newStocks]
               }
             case UPDATE_AVAILABLE:
               return {
