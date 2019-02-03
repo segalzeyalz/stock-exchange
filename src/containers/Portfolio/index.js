@@ -107,10 +107,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      onOpen: (symbol, name, quantity) => dispatch({type:UIActions.OPEN_POPUP, Btn:"Sell", symbol:symbol, name:name, quantity}),
+      onOpen: (symbol, name, quantity) => dispatch({type:UIActions.OPEN_POPUP, Btn:"Sell", symbol:symbol, name:name, quantity:quantity}),
       getPortfolio: (stocks) => dispatch({type:stocksAction.UPDATE_PORTFOLIO, stocks:stocks}),
       sortPortfolio: (param) => dispatch({type:stocksAction.SORT_PORTFOLIO_STOCKS, filterBy: param}),
-
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

@@ -5,7 +5,8 @@ const initialState = {
     name:'',
     symbol:'',
     Btn:'',
-    quantity:''
+    quantity:'',
+    price:''
 };
 
 const reducer = (state = initialState, action) => {
