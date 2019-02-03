@@ -12,8 +12,8 @@ import axios from 'axios';
 
 class AvailableFunds extends Component {
     componentDidMount(){
-        let {onReload} = this.props;
-        axios.post(`${this.props.api}/market/search`,{
+        let {onReload,api} = this.props;
+        axios.post(`${api}/market/search`,{
             "searchString": ""
           })
           .then(function (response) {
@@ -22,6 +22,16 @@ class AvailableFunds extends Component {
           .catch(function (error) {
             console.log(error);
           });
+          setInterval(()=>{
+            axios.get(`${api}/management/refresh`).then(
+                ()=>{axios.post(`${api}/market/search`,{
+                    "searchString": ""
+                  })
+              .then(function (response) {
+                onReload(response.data.stocks);
+              })})
+          },5000)
+
     }
     render(){
         let { stocks, onFilter } = this.props;
