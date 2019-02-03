@@ -24,7 +24,7 @@ class AvailableFunds extends Component {
           });
           setInterval(()=>{
             axios.get(`${api}/management/refresh`).then(
-                ()=>{console.log(filterVal)
+                ()=>{
                     axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   })

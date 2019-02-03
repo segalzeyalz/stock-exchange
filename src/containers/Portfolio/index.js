@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as UIActions from './../../constants/UIActions';
 import * as stocksAction from './../../constants/stockActions';
+import UpdatePointer from './../../constants/UpdatePointer';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,24 +20,36 @@ class Portfolio extends Component {
         .then(response => response.json())
         .then((portData) => {
             self.portData = portData;
-            let params = '/market/?symbol=';
+            let params = 'market/?symbol=';
             for (let i=0;i<portData.myStocks.length; i++) {
                 //get all stocks symbol for only one api call
-               params=params+portData.myStocks[i].symbol + ',';
+               params+=portData.myStocks[i].symbol + ',';
             }
-            fetch(`${api}${params}`)
+            fetch(`${api}/${params}`)
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<data.stocks.length; i++) {
-                    //add more parameters - name, pric, startofcommerce
-                    self.portData.myStocks[i].name = data.stocks[i].name;
-                    self.portData.myStocks[i].currentPrice = data.stocks[i].currentPrice
-                    self.portData.myStocks[i].profit = data.stocks[i].currentPrice
-                    self.portData.myStocks[i].startOfCommerce = parseFloat(parseFloat(data.stocks[i].startOfCommerce) - parseFloat(self.portData.myStocks[i].purchasePrice))
+                    UpdatePointer(self.portData.myStocks[i],data.stocks[i])
              }
              this.props.getPortfolio(self.portData)
                 })
        });
+       //Update every 5 seconds
+       setInterval(()=>{
+        let { myStocks } = self.portData;
+        let params = 'market/?symbol=';
+        for(let j=0; j<myStocks.length; j++){
+            params+=myStocks[j].symbol + ',';
+        }
+        fetch(`${api}/${params}`)
+        .then(res=> res.json())
+        .then((data)=>{ 
+            //add more parameters - name, price, startofcommerce
+            for (let i=0;i<data.stocks.length; i++) {
+            UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+         }
+         this.props.getPortfolio(self.portData)})
+      },5000)
             
     }
     render(){
