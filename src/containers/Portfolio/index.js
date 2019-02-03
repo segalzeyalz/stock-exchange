@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import * as actionTypes from './../../constants/UIActions';
+import * as UIActions from './../../constants/UIActions';
+import * as stocksAction from './../../constants/stockActions';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,8 +11,12 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import CSS from './Portfolio.css';
 
 class Portfolio extends Component {
+    componentDidMount(){
+        fetch('http://int.v2x.foresightauto.com/stock-exchange-service/portfolio')
+        .then(response => response.json())
+        .then(data => this.props.getPortfolio(data));
+    }
     render(){
-
         let { stocks } = this.props;
         return (<div className={CSS.Portfolio}>
                 <h2>My Portfolio</h2>
@@ -31,8 +36,8 @@ class Portfolio extends Component {
                            return <TableRow>
                                     <TableCell>{elem.symbol}</TableCell>
                                     <TableCell>{elem.name}</TableCell>
-                                    <TableCell>{elem.qty}</TableCell>
-                                    <TableCell>{elem.price}</TableCell>
+                                    <TableCell>{elem.quantity}</TableCell>
+                                    <TableCell>{elem.purchasePrice}</TableCell>
                                     <TableCell>{elem.startOfCommerce}</TableCell>
                                     <TableCell>{elem.currentPrice}</TableCell>
                                     <TableCell>{elem.profit}</TableCell>
@@ -57,7 +62,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      onOpen: () => dispatch({type:actionTypes.OPEN_POPUP}),
+      onOpen: () => dispatch({type:UIActions.OPEN_POPUP}),
+      getPortfolio: (stocks) => dispatch({type:stocksAction.UPDATE_PORTFOLIO, stocks:stocks})
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

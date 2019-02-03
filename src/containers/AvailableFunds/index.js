@@ -10,9 +10,14 @@ import TableRow from '@material-ui/core/TableRow';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
+    componentDidMount(){
+        // fetch(API + DEFAULT_QUERY)
+        // .then(response => response.json())
+        // .then(data => this.setState({ hits: data.hits }));
+
+    }
     render(){
         let { stocks, onFilter } = this.props;
-        console.log(onFilter)
         return (<div className={CSS.AvailableFunds}>
                 <h2>My AvailableFunds</h2>
                    <Table>
