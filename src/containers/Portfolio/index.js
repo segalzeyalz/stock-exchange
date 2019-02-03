@@ -45,13 +45,13 @@ class Portfolio extends Component {
                 <h2>My Portfolio</h2>
                    <Table>
                        <TableHead>
-                           <TableCell>Symbol</TableCell>
-                           <TableCell>Name</TableCell>
-                           <TableCell>Purchased Quantity</TableCell>
-                           <TableCell>Purchase Price</TableCell>
-                           <TableCell>Current Price</TableCell>
-                           <TableCell>Profit</TableCell>
-                           <TableCell>start Of Commerce</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("symbol")}>Symbol</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("name")}>Name</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("quantity")}>Purchased Quantity</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("purchasePrice")}>Purchase Price</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("currentPrice")}>Current Price</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("profit")}>Profit</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("startOfCommerce")}>start Of Commerce</TableCell>
                            <TableCell>sell</TableCell>
                        </TableHead>
                      <TableBody>
@@ -80,6 +80,7 @@ class Portfolio extends Component {
 const mapStateToProps = state => {
     return {
         stocks:state.stocks.stocks,
+        filteredPortfolio:state.stocks.filteredPortfolio,
         api:state.stocks.api
     }
 }
@@ -87,7 +88,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       onOpen: () => dispatch({type:UIActions.OPEN_POPUP}),
-      getPortfolio: (stocks) => dispatch({type:stocksAction.UPDATE_PORTFOLIO, stocks:stocks})
+      getPortfolio: (stocks) => dispatch({type:stocksAction.UPDATE_PORTFOLIO, stocks:stocks}),
+      sortPortfolio: (param) => dispatch({type:stocksAction.SORT_PORTFOLIO_STOCKS, filterBy: param})
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

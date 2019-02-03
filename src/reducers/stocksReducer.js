@@ -3,6 +3,7 @@ const initialState = {
       "stocks": [],
       "filteredStocks":[],
       "lastAvaiableSortedBy":"",
+      "lastPortfolioSortedBy":"",
       "availableStocks":[],
       "api":"http://int.v2x.foresightauto.com/stock-exchange-service",
       "filterVal":""
@@ -20,7 +21,7 @@ const reducer = (state = initialState, action) => {
                 lastAvaiableSortedBy:"",
                 filterVal:action.val
             }
-            case SORT_AVAILABLE_STOCKS:
+          case SORT_AVAILABLE_STOCKS:
               let {lastAvaiableSortedBy} = state;
               //Ascending and descending sort - when click twice on same val - it opposes
               if(lastAvaiableSortedBy && lastAvaiableSortedBy.filter===action.filterBy){
@@ -42,7 +43,7 @@ const reducer = (state = initialState, action) => {
                       }
                   })
                 ]
-              }else{
+              } else{
                 sortAvailableBy = [...filteredStocks.sort((a,b)=> {
                   if(a[action.filterBy]<b[action.filterBy]){
                       return 1;}
@@ -59,7 +60,6 @@ const reducer = (state = initialState, action) => {
               }
             case UPDATE_PORTFOLIO:
               let newStocks = action.stocks.myStocks;
-              console.log([...newStocks])
               return {
                 ...state,
                 stocks:[...newStocks]
@@ -76,6 +76,44 @@ const reducer = (state = initialState, action) => {
                 availableStocks:action.availableStocks,
                 stocks:[]
 
+              }
+            case SORT_PORTFOLIO_STOCKS:
+            let SortPortfolioStocks = state.stocks;
+            let { lastPortfolioSortedBy } = state;
+            //Ascending and descending sort - when click twice on same val - it opposes
+            if(lastPortfolioSortedBy && lastPortfolioSortedBy.filter===action.filterBy){
+              lastPortfolioSortedBy.direction=!lastPortfolioSortedBy.direction
+            }else{
+              lastPortfolioSortedBy = {
+                filter:action.filterBy,
+                direction:true
+              }
+            }
+            let sortPortfolioBy;
+            if(lastPortfolioSortedBy.direction){
+              sortPortfolioBy = [...SortPortfolioStocks.sort((a,b)=> {
+                if(a[action.filterBy]>b[action.filterBy]){
+                    return 1;}
+                  else if(a[action.filterBy]<b[action.filterBy]){
+                    return -1;} else{
+                      return 0
+                    }
+                })
+              ]
+            }else{
+              sortPortfolioBy = [...SortPortfolioStocks.sort((a,b)=> {
+                if(a[action.filterBy]<b[action.filterBy]){
+                    return 1;}
+                  else if(a[action.filterBy]>b[action.filterBy]){
+                    return -1;} else{
+                      return 0
+                    }
+                })]
+            }
+              return {
+                ...state,
+                stocks:sortPortfolioBy,
+                lastPortfolioSortedBy:lastPortfolioSortedBy
               }
              default:
               return {...state}
