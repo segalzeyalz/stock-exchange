@@ -1,5 +1,4 @@
-import { FILTER_AVAILABLE_STOCKS } from './../constants/stockActions';
-
+import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS } from './../constants/stockActions';
 const initialState = {
     "stocks": [
         {
@@ -330,21 +329,44 @@ const initialState = {
           "currentPrice": 191.41565
         }
       ],
-      "filteredStocks":[]
+      "filteredStocks":[],
+      "lastAvaiableSortedBy":""
 };
 
 const reducer = (state = initialState, action) => {
-    let { stocks, availableStocks } = state;
+    let { stocks, availableStocks, filteredStocks } = state;
     switch (action.type) {
         case FILTER_AVAILABLE_STOCKS:
             //filter from stock 
-            let filteredStocks = availableStocks.filter((elem)=>elem.symbol.toLocaleLowerCase().includes(action.val.toLocaleLowerCase()));
-            console.log(filteredStocks)
+            filteredStocks = availableStocks.filter((elem)=>elem.symbol.toLocaleLowerCase().includes(action.val.toLocaleLowerCase()));
             return {
                 ...state,
                 filteredStocks:filteredStocks
             }
+            case SORT_AVAILABLE_STOCKS:
+              let {lastAvaiableSortedBy} = state;
+              //Ascending and descending sort - when click twice on same val - it opposes
+              if(lastAvaiableSortedBy && lastAvaiableSortedBy.filter===action.filterBy){
+                lastAvaiableSortedBy.direction=!lastAvaiableSortedBy.direction
+              }else{
+                lastAvaiableSortedBy = {
+                  filter:action.filterBy,
+                  direction:true
+                }
+              }
+              let sortAvailableBy;
+              if(lastAvaiableSortedBy.direction){
+                sortAvailableBy = [...filteredStocks.sort((a,b)=> {return a[action.filterBy]-b[action.filterBy]})]
+              }else{
+                sortAvailableBy = [...filteredStocks.sort((a,b)=> {return b[action.filterBy]-a[action.filterBy]})]
+              }
+              return {
+                ...state,
+                filteredStocks:sortAvailableBy,
+                lastAvaiableSortedBy:lastAvaiableSortedBy
+              }
     }
+
     return state;
 };
 
