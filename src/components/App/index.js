@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './../Header';
 import SearchBar from './../../containers/SearchBar';
-import AvailableFunds from './../AvailableFunds';
+import AvailableFunds from './../../containers/AvailableFunds'
 import Portfolio from './../../containers/Portfolio';
 import ResetBtn from './../ResetBtn'
 import CSS from './App.css';

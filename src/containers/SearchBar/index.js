@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as actionTypes from './../../constants/stockActions';
 import { connect } from 'react-redux';
-import Autosuggest from 'react-autosuggest';
 
 import CSS from './SearchBar.css';
 
