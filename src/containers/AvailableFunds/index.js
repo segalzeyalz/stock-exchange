@@ -37,7 +37,7 @@ class AvailableFunds extends Component {
     render(){
         let { stocks, onFilter } = this.props;
         return (<div className={CSS.AvailableFunds}>
-                <h2>My AvailableFunds</h2>
+                <h2>My Available Funds</h2>
                    <Table>
                        <TableHead>
                            <TableCell onClick={()=>onFilter("symbol")}>Symbol</TableCell>

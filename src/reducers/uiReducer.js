@@ -9,8 +9,9 @@ const reducer = (state = initialState, action) => {
         case OPEN_POPUP:
             return {...state,
                     popupOpen:action.popupId}
+        default:
+            return {...state}
     }
-    return state;
 };
 
 export default reducer;
