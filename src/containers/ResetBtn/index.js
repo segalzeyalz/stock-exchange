@@ -10,12 +10,13 @@ class ResetBtn extends Component {
     this.reset=this.reset.bind(this)
   }
   reset(){
-    let { api } = this.props
+    let { api, onReset } = this.props
     axios.delete(`${api}/management`)
     .then(axios.post(`${api}/market/search`,{
         "searchString": ""
     }
   ).then((data)=>{
+    onReset(data.data.stocks)
   })
 )
   }
@@ -35,7 +36,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      reset: (stocks) => dispatch({type:stocksAction.RESET, stocks:stocks})
+      onReset: (availableStocks) => dispatch({type:stocksAction.RESET, availableStocks:availableStocks}),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ResetBtn);
