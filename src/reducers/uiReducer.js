@@ -1,4 +1,4 @@
-import { OPEN_POPUP, CLOSE_POPUP, UPDATE_DETAILS, UPDATE_PRICE } from './../constants/UIActions';
+import { OPEN_POPUP, CLOSE_POPUP, UPDATE_DETAILS } from './../constants/UIActions';
 
 const initialState = {
     popupOpen:'',
@@ -27,12 +27,8 @@ const reducer = (state = initialState, action) => {
                 }
         case UPDATE_DETAILS:
                 return {...state,
-                    quantity:action.amount
+                    [action.name]:action.val
                 }
-        case UPDATE_PRICE:
-            return {...state,
-                  price:action.price
-            }
         default:
             return {...state}
     }

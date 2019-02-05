@@ -50,7 +50,7 @@ class Popup extends Component {
                             <h2 className={CSS.Title}>{btn} {symbol} - {name}</h2>
                               <div className={CSS.FormContainer}>
                                 <label>Amount: </label>
-                                <input type="number" onChange={(e)=>this.props.updateAmount(e.target.value)}/>
+                                <input type="number" min={0} onChange={(e)=>this.props.updateAmount(e.target.value)}/>
                             </div>
                             <h3>Current Price: {price}</h3>
                             <h3>Total Price: {parseFloat(price*amount)}</h3>
@@ -87,8 +87,8 @@ class Popup extends Component {
         return {
             closePopup: ()=> dispatch({type: UIActions.CLOSE_POPUP}),
             buy: (funds, newStock)=>dispatch({type:stockActions.BUY_STOCK, funds:funds, newStock:newStock}),
-            updateAmount: (amount)=>dispatch({type:UIActions.UPDATE_DETAILS, amount:amount}),
-            updatePrice: (price)=>dispatch({type:UIActions.UPDATE_PRICE, price:price})
+            updateAmount: (amount)=>dispatch({type:UIActions.UPDATE_DETAILS, name: "quantity", val:amount}),
+            updatePrice: (price)=>dispatch({type:UIActions.UPDATE_DETAILS, name:"price", val:price})
         }
     }
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);
