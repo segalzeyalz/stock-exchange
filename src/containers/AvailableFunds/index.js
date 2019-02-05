@@ -21,18 +21,19 @@ class AvailableFunds extends Component {
         fetch(`${api}/portfolio`)
         .then(response => response.json())
         .then((portData) => {
-            self.portData = portData
+            self.portData = portData;
         })
         axios.post(`${api}/market/search`,{
             "searchString": this.props.filterVal
           }).then(function (response) {
             let stockArr = response.data.stocks;
+            if(self.portData){
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
             for(let i=0; i<myStock.length; i++){
                 stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
             }
-            onReload(response.data.stocks, self.portData.funds);
+            onReload(response.data.stocks, self.portData.funds);}
           })
           //Refresh every 5 seconds
           setInterval(()=>{
@@ -41,14 +42,39 @@ class AvailableFunds extends Component {
                   })
               .then(function (response) {
                 let stockArr = response.data.stocks;
+            if(self.portData){
                 let myStock=self.portData.myStocks;
                 //Filter all stocks that bought
                 for(let i=0; i<myStock.length; i++){
                     stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
                 }
-            onReload(response.data.stocks, self.portData.funds);
+             onReload(response.data.stocks, self.portData.funds);
+            }
               })
           },5000)
+    }
+
+    componentWillUpdate(){
+                //Getting all available stocks
+                let { onReload, api } = this.props;
+                let self = this;
+                fetch(`${api}/portfolio`)
+                .then(response => response.json())
+                .then((portData) => {
+                    self.portData = portData
+                })
+                axios.post(`${api}/market/search`,{
+                    "searchString": this.props.filterVal
+                  }).then(function (response) {
+                    let stockArr = response.data.stocks;
+                    if(self.portData){
+                    let myStock=self.portData.myStocks;
+                    //Filter all stocks that bought
+                    for(let i=0; i<myStock.length; i++){
+                        stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
+                    }
+                    onReload(response.data.stocks, self.portData.funds);}
+                  })
     }
     render(){
         let { stocks, onFilter } = this.props;

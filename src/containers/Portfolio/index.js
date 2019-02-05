@@ -23,6 +23,28 @@ class Portfolio extends Component {
             "stockSymbol": symbol,
           })
     }
+    componentWillUpdate(){
+        let { api } = this.props;
+        let self = this;
+        fetch(`${api}/portfolio`)
+        .then(response => response.json())
+        .then((portData) => {
+            self.portData = portData;
+            //get all stocks symbol for only one api call
+            let params = 'market/?symbol=';
+            for (let i=0;i<portData.myStocks.length; i++) {
+               params+=portData.myStocks[i].symbol + ',';
+            }
+            fetch(`${api}/${params}`)
+            .then(res=> res.json())
+            .then((data)=>{ 
+                for (let i=0;i<data.stocks.length; i++) {
+                    UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+             }
+             this.props.getPortfolio(self.portData)
+                })
+       }); 
+    }
     componentDidMount(){
         let { api } = this.props;
         let self = this;
@@ -46,6 +68,7 @@ class Portfolio extends Component {
        });
        //Update every 5 seconds
        setInterval(()=>{
+        if(self.portData){
         let { myStocks } = self.portData;
         let params = 'market/?symbol=';
         for(let j=0; j<myStocks.length; j++){
@@ -58,7 +81,7 @@ class Portfolio extends Component {
             for (let i=0;i<data.stocks.length; i++) {
             UpdatePointer(self.portData.myStocks[i],data.stocks[i])
          }
-         this.props.getPortfolio(self.portData)})
+         this.props.getPortfolio(self.portData)})}
       },5000)
             
     }
