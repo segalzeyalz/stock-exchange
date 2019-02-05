@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import AvailableFunds from './../../containers/AvailableFunds';
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom'
+import CSS from './Menu.css';
 
-import { Router, Route, hashHistory } from 'react-router';
-
-class Menu extends Component {
-render(){
+const Menu = () => {
     return (
-    <Router history={hashHistory}>
-      <Route path="/" component={AvailableFunds}/>
-    </Router> )
-    }
-}
-
+      <div className={CSS.Menu}>
+        <Button><Link className={CSS.WithoutDecor} to="/">Portfolio</Link></Button>
+        <Button><Link className={CSS.WithoutDecor} to="/funds">AvailableFunds</Link></Button>
+      </div>
+    )
+  }
 export default Menu;
