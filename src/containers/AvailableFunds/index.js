@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import SearchBar from './../SearchBar'
 import SvgIcon from '@material-ui/core/SvgIcon';
 import axios from 'axios';
 
@@ -31,7 +32,7 @@ class AvailableFunds extends Component {
             for(let i=0; i<myStock.length; i++){
                 stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
             }
-            onReload(response.data.stocks);
+            onReload(response.data.stocks, self.portData.funds);
           })
           //Refresh every 5 seconds
           setInterval(()=>{
@@ -45,18 +46,18 @@ class AvailableFunds extends Component {
                 for(let i=0; i<myStock.length; i++){
                     stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
                 }
-                onReload(response.data.stocks);
+            onReload(response.data.stocks, self.portData.funds);
               })
           },5000)
     }
     render(){
         let { stocks, onFilter } = this.props;
-        if(this.props.filterVal!==""){
         return (<div className={CSS.AvailableFunds}>
+                    <SearchBar/>
                     <div className={CSS.Center}>
                         <h2>My Available Funds: {this.props.funds}</h2>
                     </div>
-                   <Table>
+                   {this.props.filterVal!=="" && <Table>
                        <TableHead>
                         <TableRow>
                            <TableCell onClick={()=>onFilter("symbol")}>Symbol</TableCell>
@@ -79,10 +80,8 @@ class AvailableFunds extends Component {
                                  </TableRow>
                         }
                     )}</TableBody>
-                   </Table>
-                </div>)}else{
-                    return null
-                }
+                   </Table>}
+                </div>)
     }
 }
   
@@ -97,7 +96,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       onFilter: (name) => dispatch({type:stockActions.SORT_AVAILABLE_STOCKS, filterBy:name}),
-      onReload: (availableStocks) => dispatch({type:stockActions.UPDATE_AVAILABLE, availableStocks:availableStocks}),
+      onReload: (availableStocks,funds) => dispatch({type:stockActions.UPDATE_AVAILABLE, availableStocks:availableStocks, funds:funds}),
       onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name})
     }
 }

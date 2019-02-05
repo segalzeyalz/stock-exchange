@@ -55,7 +55,7 @@ class Popup extends Component {
                             <h3>Current Price: {price}</h3>
                             <h3>Total Price: {parseFloat(price*amount)}</h3>
                             <div className={CSS.ButtonsContainer}>
-                                <Button onClick={this.buy()}
+                                <Button onClick={()=>this.buy()}
                                     disabled={parseFloat(price*amount)>funds}
                                     variant="contained" color="primary">
                                     {btn}

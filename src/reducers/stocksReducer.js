@@ -71,7 +71,8 @@ const reducer = (state = initialState, action) => {
               return {
                 ...state,
                 availableStocks:action.availableStocks,
-                filteredStocks:action.availableStocks
+                filteredStocks:action.availableStocks,
+                funds: action.funds? action.funds:state.funds
               }
             case RESET:
               return {...state,
