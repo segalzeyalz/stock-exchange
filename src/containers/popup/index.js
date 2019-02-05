@@ -12,7 +12,6 @@ class Popup extends Component {
         super();
         this.buy = this.buy.bind(this);
     }
-    
     buy(){
         let { api,symbol,amount, funds, price } = this.props;
         axios.post(`${api}/market/buy`,{
@@ -26,8 +25,7 @@ class Popup extends Component {
                 purchasePrice: this.props.price,
                 quantity: this.props.amount,
                 symbol: this.props.symbol})
-            }
-          )
+            })
     }
     componentDidMount(){
         setInterval(()=>{

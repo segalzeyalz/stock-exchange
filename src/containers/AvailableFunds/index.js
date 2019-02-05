@@ -23,24 +23,18 @@ class AvailableFunds extends Component {
             self.portData = portData
         })
         axios.post(`${api}/market/search`,{
-            "searchString": ""
-          })
-          .then(function (response) {
+            "searchString": this.props.filterVal
+          }).then(function (response) {
             let stockArr = response.data.stocks;
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
             for(let i=0; i<myStock.length; i++){
                 stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
             }
-            onReload(stockArr);
+            onReload(response.data.stocks);
           })
-          .catch(function (error) {
-            console.log(error);
-          });
           //Refresh every 5 seconds
           setInterval(()=>{
-            axios.get(`${api}/management/refresh`).then(
-                ()=>{
                     axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   })
@@ -52,11 +46,12 @@ class AvailableFunds extends Component {
                     stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
                 }
                 onReload(response.data.stocks);
-              })})
+              })
           },5000)
     }
     render(){
         let { stocks, onFilter } = this.props;
+        if(this.props.filterVal!==""){
         return (<div className={CSS.AvailableFunds}>
                     <div className={CSS.Center}>
                         <h2>My Available Funds: {this.props.funds}</h2>
@@ -85,7 +80,9 @@ class AvailableFunds extends Component {
                         }
                     )}</TableBody>
                    </Table>
-                </div>)
+                </div>)}else{
+                    return null
+                }
     }
 }
   

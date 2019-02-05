@@ -76,7 +76,7 @@ class Portfolio extends Component {
                            <TableCell onClick={()=>this.props.sortPortfolio("purchasePrice")}>Purchase Price</TableCell>
                            <TableCell onClick={()=>this.props.sortPortfolio("currentPrice")}>Current Price</TableCell>
                            <TableCell onClick={()=>this.props.sortPortfolio("profit")}>Profit</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("startOfCommerce")}>start Of Commerce</TableCell>
+                           <TableCell onClick={()=>this.props.sortPortfolio("startOfCommerce")}>Start Of Commerce</TableCell>
                            <TableCell>sell</TableCell>
                         </TableRow>
                        </TableHead>
