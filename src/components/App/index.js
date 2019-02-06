@@ -19,8 +19,8 @@ class App extends Component {
             <Menu/>
             <Popup/>
             <Switch>
-            <Route exact path="/" component={Portfolio}/>
-            <Route exact path="/funds" component={AvailableFunds}/>
+              <Route exact path="/" component={Portfolio}/>
+              <Route exact path="/funds" component={AvailableFunds}/>
           </Switch>
           <ResetBtn/>
           </div>

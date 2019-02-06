@@ -113,7 +113,7 @@ class Portfolio extends Component {
                                     <TableCell>{elem.currentPrice}</TableCell>
                                     <TableCell>
                                         <div className={CSS.Trend}>
-                                            <span className={elem.profit>0? CSS.Positive:CSS.Negative}>{(elem.profit/elem.purchasePrice)*100}%</span>
+                                            <span className={elem.profit>0? CSS.Positive:CSS.Negative}>{((elem.profit/elem.purchasePrice)*100).toFixed(3)}%</span>
                                             <span className={elem.profit>0? CSS.PositiveArrow:CSS.NegativeArrow}></span>
                                         </div>
                                     </TableCell>

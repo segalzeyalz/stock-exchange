@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSS from './AvailableFunds.css';
 import * as stockActions from './../../constants/stockActions';
 import * as UIActions from './../../constants/UIActions';
+import dataFUncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,11 +19,7 @@ class AvailableFunds extends Component {
         //Getting all available stocks
         let { onReload, api } = this.props;
         let self = this;
-        fetch(`${api}/portfolio`)
-        .then(response => response.json())
-        .then((portData) => {
-            self.portData = portData;
-        })
+        dataFUncs.fetchPortfolio.bind(this)(api,self)
         axios.post(`${api}/market/search`,{
             "searchString": this.props.filterVal
           }).then(function (response) {
@@ -30,13 +27,12 @@ class AvailableFunds extends Component {
             if(self.portData){
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
-            for(let i=0; i<myStock.length; i++){
-                stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
-            }
-            onReload(response.data.stocks, self.portData.funds);}
+            stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+            onReload(stockArr, self.portData.funds);}
           })
           //Refresh every 5 seconds
           setInterval(()=>{
+                     dataFUncs.fetchPortfolio.bind(this)(api,self)
                     axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   })
@@ -45,10 +41,9 @@ class AvailableFunds extends Component {
             if(self.portData){
                 let myStock=self.portData.myStocks;
                 //Filter all stocks that bought
-                for(let i=0; i<myStock.length; i++){
-                    stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
-                }
-             onReload(response.data.stocks, self.portData.funds);
+                
+                stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+                onReload(stockArr, self.portData.funds);
             }
               })
           },5000)
@@ -70,10 +65,9 @@ class AvailableFunds extends Component {
                     if(self.portData){
                     let myStock=self.portData.myStocks;
                     //Filter all stocks that bought
-                    for(let i=0; i<myStock.length; i++){
-                        stockArr = stockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
+                    stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+                    onReload(stockArr, self.portData.funds);
                     }
-                    onReload(response.data.stocks, self.portData.funds);}
                   })
     }
     render(){

@@ -13,18 +13,14 @@ class Popup extends Component {
         this.buy = this.buy.bind(this);
     }
     buy(){
-        let { api,symbol,amount, funds, price } = this.props;
+        let { api,symbol,amount } = this.props;
         axios.post(`${api}/market/buy`,{
             "stockSymbol": symbol,
             "stockQuantity":amount
-          }).then(()=>{
-              this.props.buy(funds-price*amount, {
-                currentPrice: this.props.price,
-                name: this.props.name,
-                profit: 0,
-                purchasePrice: this.props.price,
-                quantity: this.props.amount,
-                symbol: this.props.symbol})
+          })
+            .then(()=>{
+                this.props.removeAvailable(symbol);
+                this.props.closePopup();
             })
     }
     componentDidMount(){
@@ -85,8 +81,8 @@ class Popup extends Component {
       
       const mapDispatchToProps = dispatch => {
         return {
+            removeAvailable: (symbol)=>dispatch({type:stockActions.REMOVE_AVAILABLE, symbol:symbol}),
             closePopup: ()=> dispatch({type: UIActions.CLOSE_POPUP}),
-            buy: (funds, newStock)=>dispatch({type:stockActions.BUY_STOCK, funds:funds, newStock:newStock}),
             updateAmount: (amount)=>dispatch({type:UIActions.UPDATE_DETAILS, name: "quantity", val:amount}),
             updatePrice: (price)=>dispatch({type:UIActions.UPDATE_DETAILS, name:"price", val:price})
         }
