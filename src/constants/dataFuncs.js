@@ -1,9 +1,12 @@
 const dataFUncs = {
-    fetchPortfolio: (api, self)=>{
+    fetchPortfolio: (api, self, func)=>{
         fetch(`${api}/portfolio`)
         .then(response => response.json())
         .then((portData) => {
             self.portData = portData
+            if(func){
+                func()
+            }
         })
     },
     removeDuplicates: (stockArr, myStock)=>{

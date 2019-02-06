@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as stocksAction from './../../constants/stockActions';
 import UpdatePointer from './../../constants/UpdatePointer';
+import dataFuncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
