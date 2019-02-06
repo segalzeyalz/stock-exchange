@@ -53,11 +53,8 @@ class AvailableFunds extends Component {
                 //Getting all available stocks
                 let { onReload, api } = this.props;
                 let self = this;
-                fetch(`${api}/portfolio`)
-                .then(response => response.json())
-                .then((portData) => {
-                    self.portData = portData
-                })
+                dataFUncs.fetchPortfolio.bind(this)(api,self);
+                
                 axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   }).then(function (response) {
