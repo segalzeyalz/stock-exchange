@@ -12,6 +12,11 @@ const dataFUncs = {
             newStockArr = newStockArr.filter(elem=>elem.symbol!==myStock[i].symbol)
         }
         return newStockArr;
+    },
+    updatePrice: (api, symbol, func )=>{
+        fetch(`${api}/market?symbol=${symbol}`)
+               .then(response => response.json())
+               .then((price) => {func(price.stocks.length && price.stocks[0].currentPrice)})
     }
 }
 

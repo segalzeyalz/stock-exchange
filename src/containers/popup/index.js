@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CSS from './Popup.css';
+import dataFuncs from './../../constants/dataFuncs';
 import SimetricX from '../../components/SimetricX';
 import Button from '@material-ui/core/Button';
 import * as UIActions from './../../constants/UIActions';
@@ -25,17 +26,13 @@ class Popup extends Component {
     }
     componentDidMount(){
         setInterval(()=>{
-            let {api,symbol} = this.props;
-             fetch(`${api}/market?symbol=${symbol}`)
-               .then(response => response.json())
-               .then((price) => {this.props.updatePrice(price.stocks.length && price.stocks[0].currentPrice)})
+            let {api, symbol, updatePrice} = this.props;
+            dataFuncs.updatePrice.bind(this)(api,symbol, updatePrice)
         },5000)
     }
     componentDidUpdate(){
-        let {api,symbol} = this.props;
-                fetch(`${api}/market?symbol=${symbol}`)
-               .then(response => response.json())
-               .then((price) => {this.props.updatePrice(price.stocks.length && price.stocks[0].currentPrice)})
+        let {api, symbol, updatePrice} = this.props;
+        dataFuncs.updatePrice.bind(this)(api,symbol, updatePrice)
     }
     render(){
         let {price, amount, funds, btn, symbol, name} = this.props;

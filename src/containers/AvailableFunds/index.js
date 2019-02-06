@@ -28,7 +28,8 @@ class AvailableFunds extends Component {
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
             stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
-            onReload(stockArr, self.portData.funds);}
+            onReload(stockArr, self.portData.funds);
+        }
           })
           //Refresh every 5 seconds
           setInterval(()=>{
@@ -41,7 +42,6 @@ class AvailableFunds extends Component {
             if(self.portData){
                 let myStock=self.portData.myStocks;
                 //Filter all stocks that bought
-                
                 stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
                 onReload(stockArr, self.portData.funds);
             }
