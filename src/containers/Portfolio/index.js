@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
+import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
 import axios from 'axios';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -81,22 +81,15 @@ class Portfolio extends Component {
     }
 
     render(){
-        let { stocks } = this.props;
+        let { stocks, sortPortfolio } = this.props;
         return (<div className={CSS.Portfolio}>
                     <div className={CSS.Center}><h2>My Portfolio</h2></div>
                    <Table>
-                       <TableHead>
-                        <TableRow>
-                           <TableCell onClick={()=>this.props.sortPortfolio("symbol")}>Symbol</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("name")}>Name</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("quantity")}>Purchased Quantity</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("purchasePrice")}>Purchase Price</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("currentPrice")}>Current Price</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("profit")}>Profit</TableCell>
-                           <TableCell onClick={()=>this.props.sortPortfolio("startOfCommerce")}>Start Of Commerce</TableCell>
-                           <TableCell>sell</TableCell>
-                        </TableRow>
-                       </TableHead>
+                   <TableHeader type={"Portfolio"} filters={[{item: "symbol", name: "Symbol"},{item: "name", name: "Name"},
+                       {item: "quantity", name: "Purchased Quantity"},{item: "purchasePrice", name: "Purchase Price"},
+                       {item: "currentPrice", name: "Current Price"},{item: "profit", name: "Profit"},
+                       {item: "startOfCommerce", name: "Start Of Commerce"}]}
+                       onFilter={sortPortfolio}/>
                      <TableBody>
                        {stocks.map(elem=> {
                            return <TableRow key={elem.symbol}>
