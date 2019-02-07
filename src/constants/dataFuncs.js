@@ -20,6 +20,13 @@ const dataFUncs = {
         fetch(`${api}/market?symbol=${symbol}`)
                .then(response => response.json())
                .then((price) => {func(price.stocks.length && price.stocks[0].currentPrice)})
+    },
+    getParams: (array)=>{
+        let params = 'market/?symbol=';
+        for (let i=0;i<array.length; i++) {
+           params+=array[i].symbol + ',';
+        }
+        return params;
     }
 }
 

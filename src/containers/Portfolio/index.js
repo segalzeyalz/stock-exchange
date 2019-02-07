@@ -32,10 +32,7 @@ class Portfolio extends Component {
         .then((portData) => {
             self.portData = portData;
             //get all stocks symbol for only one api call
-            let params = 'market/?symbol=';
-            for (let i=0;i<portData.myStocks.length; i++) {
-               params+=portData.myStocks[i].symbol + ',';
-            }
+            let params = dataFuncs.getParams(portData.myStocks)
             fetch(`${api}/${params}`)
             .then(res=> res.json())
             .then((data)=>{ 
@@ -54,10 +51,7 @@ class Portfolio extends Component {
         .then((portData) => {
             self.portData = portData;
             //get all stocks symbol for only one api call
-            let params = 'market/?symbol=';
-            for (let i=0;i<portData.myStocks.length; i++) {
-               params+=portData.myStocks[i].symbol + ',';
-            }
+            let params = dataFuncs.getParams(portData.myStocks)
             fetch(`${api}/${params}`)
             .then(res=> res.json())
             .then((data)=>{ 
@@ -70,19 +64,18 @@ class Portfolio extends Component {
        //Update every 5 seconds
        setInterval(()=>{
         if(self.portData){
-        let { myStocks } = self.portData;
-        let params = 'market/?symbol=';
-        for(let j=0; j<myStocks.length; j++){
-            params+=myStocks[j].symbol + ',';
+            let { myStocks } = self.portData;
+            let params = dataFuncs.getParams(myStocks)
+
+            fetch(`${api}/${params}`)
+            .then(res=> res.json())
+            .then((data)=>{ 
+                //add more parameters - name, price, startofcommerce
+                for (let i=0;i<data.stocks.length; i++) {
+                UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+            }
+            this.props.getPortfolio(self.portData)})
         }
-        fetch(`${api}/${params}`)
-        .then(res=> res.json())
-        .then((data)=>{ 
-            //add more parameters - name, price, startofcommerce
-            for (let i=0;i<data.stocks.length; i++) {
-            UpdatePointer(self.portData.myStocks[i],data.stocks[i])
-         }
-         this.props.getPortfolio(self.portData)})}
       },5000)
             
     }
