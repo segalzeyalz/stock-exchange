@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CSS from './AvailableFunds.css';
 import * as stockActions from './../../constants/stockActions';
 import * as UIActions from './../../constants/UIActions';
-import dataFUncs from './../../constants/dataFuncs';
+import dataFuncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,7 +19,7 @@ class AvailableFunds extends Component {
         //Getting all available stocks
         let { onReload, api } = this.props;
         let self = this;
-        dataFUncs.fetchPortfolio.bind(this)(api,self)
+        dataFuncs.fetchPortfolio.bind(this)(api,self)
         axios.post(`${api}/market/search`,{
             "searchString": this.props.filterVal
           }).then(function (response) {
@@ -27,13 +27,13 @@ class AvailableFunds extends Component {
             if(self.portData){
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
-            stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+            stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
             onReload(stockArr, self.portData.funds);
         }
           })
           //Refresh every 5 seconds
           setInterval(()=>{
-                     dataFUncs.fetchPortfolio.bind(this)(api,self)
+                     dataFuncs.fetchPortfolio.bind(this)(api,self)
                     axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   })
@@ -42,7 +42,7 @@ class AvailableFunds extends Component {
             if(self.portData){
                 let myStock=self.portData.myStocks;
                 //Filter all stocks that bought
-                stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+                stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
                 onReload(stockArr, self.portData.funds);
             }
               })
@@ -53,8 +53,8 @@ class AvailableFunds extends Component {
                 //Getting all available stocks
                 let { onReload, api } = this.props;
                 let self = this;
-                dataFUncs.fetchPortfolio.bind(this)(api,self);
-                
+                dataFuncs.fetchPortfolio.bind(this)(api,self);
+
                 axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   }).then(function (response) {
@@ -62,7 +62,7 @@ class AvailableFunds extends Component {
                     if(self.portData){
                     let myStock=self.portData.myStocks;
                     //Filter all stocks that bought
-                    stockArr = dataFUncs.removeDuplicates(stockArr, myStock)
+                    stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
                     onReload(stockArr, self.portData.funds);
                     }
                   })

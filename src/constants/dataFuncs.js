@@ -1,4 +1,4 @@
-const dataFUncs = {
+const dataFuncs = {
     fetchPortfolio: (api, self, func)=>{
         fetch(`${api}/portfolio`)
         .then(response => response.json())
@@ -30,4 +30,4 @@ const dataFUncs = {
     }
 }
 
-export default dataFUncs;
+export default dataFuncs;
