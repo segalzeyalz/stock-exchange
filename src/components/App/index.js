@@ -7,14 +7,12 @@ import Menu from './../Menu';
 import ResetBtn from './../../containers/ResetBtn';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import CSS from './App.css';
-
 
 class App extends Component {
   render() {
     return (
         <BrowserRouter>
-          <div className={CSS.App}>
+          <div>
             <Header />
             <Menu/>
             <Popup/>
