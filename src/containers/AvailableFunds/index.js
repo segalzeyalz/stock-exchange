@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
+import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from './../SearchBar'
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -54,16 +54,15 @@ class AvailableFunds extends Component {
                 let { onReload, api } = this.props;
                 let self = this;
                 dataFuncs.fetchPortfolio.bind(this)(api,self);
-
                 axios.post(`${api}/market/search`,{
                     "searchString": this.props.filterVal
                   }).then(function (response) {
                     let stockArr = response.data.stocks;
                     if(self.portData){
-                    let myStock=self.portData.myStocks;
-                    //Filter all stocks that bought
-                    stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                    onReload(stockArr, self.portData.funds);
+                        let myStock=self.portData.myStocks;
+                        //Filter all stocks that bought
+                        stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
+                        onReload(stockArr, self.portData.funds);
                     }
                   })
     }
@@ -75,14 +74,7 @@ class AvailableFunds extends Component {
                         <h2>My Available Funds: {this.props.funds}</h2>
                     </div>
                    {this.props.filterVal!=="" && <Table>
-                       <TableHead>
-                        <TableRow>
-                           <TableCell onClick={()=>onFilter("symbol")}>Symbol</TableCell>
-                           <TableCell onClick={()=>onFilter("name")}>Name</TableCell>
-                           <TableCell onClick={()=>onFilter("currentPrice")}>Price</TableCell>
-                           <TableCell>Buy</TableCell>
-                        </TableRow>
-                       </TableHead>
+                   <TableHeader type={"AvailableFunds"} filters={[{item: "symbol", name: "Symbol"},{item: "name", name: "Name"}, {item: "currentPrice", name: "Price"}]} onFilter={onFilter}/>
                      <TableBody>
                        {stocks.map(elem=> {
                            return <TableRow key={elem.symbol}>
