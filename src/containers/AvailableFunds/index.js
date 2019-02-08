@@ -49,23 +49,6 @@ class AvailableFunds extends Component {
           },5000)
     }
 
-    componentWillUpdate(){
-                //Getting all available stocks
-                let { onReload, api } = this.props;
-                let self = this;
-                dataFuncs.fetchPortfolio.bind(this)(api,self);
-                axios.post(`${api}/market/search`,{
-                    "searchString": this.props.filterVal
-                  }).then(function (response) {
-                    let stockArr = response.data.stocks;
-                    if(self.portData){
-                        let myStock=self.portData.myStocks;
-                        //Filter all stocks that bought
-                        stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                        onReload(stockArr, self.portData.funds);
-                    }
-                  })
-    }
     render(){
         let { stocks, onFilter } = this.props;
         return (<div className={CSS.AvailableFunds}>
