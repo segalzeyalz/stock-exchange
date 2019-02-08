@@ -10,7 +10,7 @@ import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
 import axios from 'axios';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import CSS from './Portfolio.css';
+import CSS from './Portfolio.scss';
 
 class Portfolio extends Component {
     portData;

@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
           }
             return {
                 ...state,
-                filteredStocks:filteredStocks,
+                filteredStocks:[...filteredStocks],
                 lastAvaiableSortedBy:"",
                 filterVal:action.val
             }
