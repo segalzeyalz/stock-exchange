@@ -11,7 +11,6 @@ import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from './../SearchBar'
 import SvgIcon from '@material-ui/core/SvgIcon';
-import axios from 'axios';
 
 class AvailableFunds extends Component {
     portData;
@@ -20,9 +19,7 @@ class AvailableFunds extends Component {
         let { onReload, api } = this.props;
         let self = this;
         dataFuncs.fetchPortfolio.bind(this)(api,self)
-        axios.post(`${api}/market/search`,{
-            "searchString": this.props.filterVal
-          }).then(function (response) {
+        dataFuncs.search(api, this.props.filterVal).then(function (response) {
             let stockArr = response.data.stocks;
             if(self.portData){
             let myStock=self.portData.myStocks;
@@ -34,17 +31,15 @@ class AvailableFunds extends Component {
           //Refresh every 5 seconds
           setInterval(()=>{
                      dataFuncs.fetchPortfolio.bind(this)(api,self)
-                    axios.post(`${api}/market/search`,{
-                    "searchString": this.props.filterVal
-                  })
-              .then(function (response) {
-                let stockArr = response.data.stocks;
-            if(self.portData){
-                let myStock=self.portData.myStocks;
-                //Filter all stocks that bought
-                stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                onReload(self.props.filterVal, stockArr, self.portData.funds);
-            }
+                     dataFuncs.search(api, this.props.filterVal)
+                    .then(function (response) {
+                    let stockArr = response.data.stocks;
+                    if(self.portData){
+                        let myStock=self.portData.myStocks;
+                        //Filter all stocks that bought
+                        stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
+                        onReload(self.props.filterVal, stockArr, self.portData.funds);
+                    }
               })
           },5000)
     }

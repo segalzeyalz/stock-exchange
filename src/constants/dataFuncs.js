@@ -34,6 +34,17 @@ const dataFuncs = {
             "stockSymbol": symbol,
             "stockQuantity":amount
           })
+    },
+    search: (api, filter)=>{
+        return axios.post(`${api}/market/search`,{
+            "searchString": filter
+          })
+    },
+    reset: (api)=>{
+        return axios.delete(`${api}/management`)
+        .then(axios.post(`${api}/market/search`,{
+            "searchString": ""
+        }))
     }
 }
 

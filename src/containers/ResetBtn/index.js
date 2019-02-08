@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import CSS from './Btn.scss';
 import * as stocksAction from './../../constants/stockActions';
-import axios from 'axios';
+import dataFuncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
 
 class ResetBtn extends Component {
@@ -12,14 +12,9 @@ class ResetBtn extends Component {
   }
   reset(){
     let { api, onReset } = this.props
-    axios.delete(`${api}/management`)
-    .then(axios.post(`${api}/market/search`,{
-        "searchString": ""
-    }
-  ).then((data)=>{
+    dataFuncs.reset(api).then((data)=>{
     onReset(data.data.stocks)
   })
-)
   }
     render(){
         return (
