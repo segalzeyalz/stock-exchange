@@ -8,7 +8,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import CSS from './Portfolio.scss';
 
@@ -20,15 +19,12 @@ class Portfolio extends Component {
     }
     sell(symbol){
         let {api} = this.props;
-        axios.post(`${api}/market/sell`,{
-            "stockSymbol": symbol,
-          })
+        dataFuncs.sell(api, symbol)
     }
     componentWillUpdate(){
         let { api } = this.props;
         let self = this;
-        fetch(`${api}/portfolio`)
-        .then(response => response.json())
+        dataFuncs.portfolioPromise(api)
         .then((portData) => {
             self.portData = portData;
             //get all stocks symbol for only one api call
@@ -46,8 +42,7 @@ class Portfolio extends Component {
     componentDidMount(){
         let { api } = this.props;
         let self = this;
-        fetch(`${api}/portfolio`)
-        .then(response => response.json())
+        dataFuncs.portfolioPromise(api)
         .then((portData) => {
             self.portData = portData;
             //get all stocks symbol for only one api call
@@ -66,7 +61,6 @@ class Portfolio extends Component {
         if(self.portData){
             let { myStocks } = self.portData;
             let params = dataFuncs.getParams(myStocks)
-
             fetch(`${api}/${params}`)
             .then(res=> res.json())
             .then((data)=>{ 

@@ -10,6 +10,10 @@ const dataFuncs = {
             }
         })
     },
+    portfolioPromise: (api)=>{
+        return fetch(`${api}/portfolio`)
+        .then(response => response.json())
+    },
     removeDuplicates: (stockArr, myStock)=>{
         let newStockArr = [...stockArr];
         for(let i=0; i<myStock.length; i++){
@@ -29,6 +33,16 @@ const dataFuncs = {
         }
         return params;
     },
+    updateStocks: (api, params, UpdatePointer, myStocks, stocks, getPortfolio, self)=>{
+        fetch(`${api}/${params}`)
+            .then(res=> res.json())
+            .then((data)=>{ 
+                for (let i=0;i<stocks.length; i++) {
+                    UpdatePointer(myStocks[i],data.stocks[i])
+             }
+             getPortfolio(self.portData)
+                })
+    },
     buy: (api, symbol, amount)=>{
         return axios.post(`${api}/market/buy`,{
             "stockSymbol": symbol,
@@ -45,6 +59,11 @@ const dataFuncs = {
         .then(axios.post(`${api}/market/search`,{
             "searchString": ""
         }))
+    },
+    sell: (api, symbol)=>{
+        return axios.post(`${api}/market/sell`,{
+            "stockSymbol": symbol,
+          })
     }
 }
 
