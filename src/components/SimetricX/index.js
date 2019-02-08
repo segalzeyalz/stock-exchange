@@ -1,5 +1,5 @@
 import React from 'react';
-import CSS from './SimetricX.css';
+import CSS from './SimetricX.scss';
 //Using functional in order to mount it once
 //component for closing the popup
 const SimetricX = (props) => {

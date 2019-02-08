@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import CSS from './Btn.css';
+import CSS from './Btn.scss';
 import * as stocksAction from './../../constants/stockActions';
 import axios from 'axios';
 import { connect } from 'react-redux';

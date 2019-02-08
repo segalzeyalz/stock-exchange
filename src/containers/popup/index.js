@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import CSS from './Popup.css';
+import CSS from './Popup.scss';
 import dataFuncs from './../../constants/dataFuncs';
 import SimetricX from '../../components/SimetricX';
 import Button from '@material-ui/core/Button';
 import * as UIActions from './../../constants/UIActions';
 import * as stockActions from './../../constants/stockActions';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 class Popup extends Component {
     constructor(){
@@ -14,12 +13,8 @@ class Popup extends Component {
         this.buy = this.buy.bind(this);
     }
     buy(){
-        let { api,symbol,amount } = this.props;
-        axios.post(`${api}/market/buy`,{
-            "stockSymbol": symbol,
-            "stockQuantity":amount
-          })
-            .then(()=>{
+        let { api, symbol, amount } = this.props;
+        dataFuncs.buy(api, symbol, amount).then(()=>{
                 this.props.removeAvailable(symbol);
                 this.props.closePopup();
             })

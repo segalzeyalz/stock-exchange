@@ -1,30 +1,26 @@
-import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, UPDATE_AVAILABLE, RESET,
+import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
   REMOVE_AVAILABLE } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
       "lastAvaiableSortedBy":"",
       "lastPortfolioSortedBy":"",
-      "availableStocks":[],
       "api":"http://int.v2x.foresightauto.com/stock-exchange-service",
       "filterVal":"",
       "funds":0
 };
 
 const reducer = (state = initialState, action) => {
-    let { availableStocks, filteredStocks } = state;
+    let { filteredStocks } = state;
     switch (action.type) {
         case FILTER_AVAILABLE_STOCKS:
             //filter from stock 
-            filteredStocks = availableStocks.filter((elem)=>elem.symbol.toLocaleLowerCase().includes(action.val.toLocaleLowerCase()));
-            for(let i=0; i<state.stocks.length; i++){
-              filteredStocks = filteredStocks.filter(elem=>elem.symbol!==state.stocks[i].symbol)
-          }
             return {
                 ...state,
-                filteredStocks:[...filteredStocks],
+                filteredStocks:[...action.stocks],
                 lastAvaiableSortedBy:"",
-                filterVal:action.val
+                filterVal:action.val,
+                funds: action.funds || state.funds
             }
           case SORT_AVAILABLE_STOCKS:
               let {lastAvaiableSortedBy} = state;
@@ -70,17 +66,9 @@ const reducer = (state = initialState, action) => {
                 stocks:[...newStocks],
                 funds:action.stocks.funds
               }
-            case UPDATE_AVAILABLE:
-              return {
-                ...state,
-                availableStocks:action.availableStocks,
-                filteredStocks:action.availableStocks,
-                funds: action.funds? action.funds:state.funds
-              }
             case RESET:
               return {...state,
                 filteredStocks:action.availableStocks,
-                availableStocks:action.availableStocks,
                 stocks:[]
               }
             case SORT_PORTFOLIO_STOCKS:
@@ -122,7 +110,7 @@ const reducer = (state = initialState, action) => {
                 lastPortfolioSortedBy:lastPortfolioSortedBy
               }
             case REMOVE_AVAILABLE:
-                filteredStocks = availableStocks.filter((elem)=>elem.symbol.toLocaleLowerCase().includes(state.filterVal.toLocaleLowerCase()));
+                filteredStocks = [...state.filteredStocks].filter((elem)=>elem.symbol.toLocaleLowerCase().includes(state.filterVal.toLocaleLowerCase()));
                 let removedAvailable = filteredStocks;
                 removedAvailable = removedAvailable.filter((elem)=>elem.symbol!==action.symbol)
                 return {...state,

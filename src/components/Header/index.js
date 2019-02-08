@@ -1,5 +1,5 @@
 import React from 'react';
-import CSS from './Header.css';
+import CSS from './Header.scss';
 
 //Static function for header - For not rendering it not unnecessary
 const Header = () => {

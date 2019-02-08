@@ -1,3 +1,4 @@
+import axios from 'axios';
 const dataFuncs = {
     fetchPortfolio: (api, self, func)=>{
         fetch(`${api}/portfolio`)
@@ -27,6 +28,12 @@ const dataFuncs = {
            params+=array[i].symbol + ',';
         }
         return params;
+    },
+    buy: (api, symbol, amount)=>{
+        return axios.post(`${api}/market/buy`,{
+            "stockSymbol": symbol,
+            "stockQuantity":amount
+          })
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CSS from './AvailableFunds.css';
+import CSS from './AvailableFunds.scss';
 import * as stockActions from './../../constants/stockActions';
 import * as UIActions from './../../constants/UIActions';
 import dataFuncs from './../../constants/dataFuncs';
@@ -28,7 +28,7 @@ class AvailableFunds extends Component {
             let myStock=self.portData.myStocks;
             //Filter all stocks that bought
             stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-            onReload(stockArr, self.portData.funds);
+            onReload(self.props.filterVal, stockArr, self.portData.funds);
         }
           })
           //Refresh every 5 seconds
@@ -43,7 +43,7 @@ class AvailableFunds extends Component {
                 let myStock=self.portData.myStocks;
                 //Filter all stocks that bought
                 stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                onReload(stockArr, self.portData.funds);
+                onReload(self.props.filterVal, stockArr, self.portData.funds);
             }
               })
           },5000)
@@ -79,8 +79,8 @@ class AvailableFunds extends Component {
   
 const mapStateToProps = state => {
     return {
-        stocks:state.stocks.filteredStocks,
         api:state.stocks.api,
+        stocks:state.stocks.filteredStocks,
         filterVal: state.stocks.filterVal,
         funds:state.stocks.funds
     }
@@ -88,8 +88,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       onFilter: (name) => dispatch({type:stockActions.SORT_AVAILABLE_STOCKS, filterBy:name}),
-      onReload: (availableStocks,funds) => dispatch({type:stockActions.UPDATE_AVAILABLE, availableStocks:availableStocks, funds:funds}),
-      onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name})
+      onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name}),
+      onReload: (val, stockArr, funds) => dispatch({type:stockActions.FILTER_AVAILABLE_STOCKS, val:val, stocks: stockArr, funds:funds}),
     }
 }
 
