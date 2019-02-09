@@ -24,7 +24,7 @@ const dataFuncs = {
     updatePrice: (api, symbol, func )=>{
         fetch(`${api}/market?symbol=${symbol}`)
                .then(response => response.json())
-               .then((price) => {func(price.stocks.length && price.stocks[0].currentPrice)})
+               .then((price) => {func(price.stocks.length && parseFloat(price.stocks[0].currentPrice))})
     },
     getParams: (array)=>{
         let params = 'market/?symbol=';

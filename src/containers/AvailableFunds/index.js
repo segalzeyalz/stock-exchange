@@ -10,7 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
 import SearchBar from './../SearchBar';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
@@ -56,12 +56,12 @@ const mapDispatchToProps = dispatch => {
       onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name}),
     }
 }
-AvailableFunds.PropTypes = {
-    api:PropTypes.string,
-    stocks:PropTypes.array,
-    filterVal: PropTypes.string,
-    funds: PropTypes.number,
-    onFilter: PropTypes.func,
-    onOpen: PropTypes.func
+AvailableFunds.propTypes = {
+    api:propTypes.string,
+    stocks:propTypes.array,
+    filterVal: propTypes.string,
+    funds: propTypes.number,
+    onFilter: propTypes.func,
+    onOpen: propTypes.func
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AvailableFunds);

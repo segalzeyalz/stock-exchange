@@ -11,6 +11,10 @@ class Popup extends Component {
     constructor(){
         super();
         this.buy = this.buy.bind(this);
+        this.convertPoisitive.bind(this)
+    }
+    convertPoisitive(target){
+        target.value = Math.abs(target.value)
     }
     buy(){
         let { api, symbol, amount } = this.props;
@@ -50,7 +54,10 @@ class Popup extends Component {
                             <h2 className={CSS.Title}>{btn} {symbol} - {name}</h2>
                               <div className={CSS.FormContainer}>
                                 <label>Amount: </label>
-                                <input type="number" min={0} onChange={(e)=>this.props.updateAmount(e.target.value)}/>
+                                <input 
+                                    onInput={(e)=>this.convertPoisitive(e.target)}
+                                    type="number" min={0}
+                                    onChange={(e)=>this.props.updateAmount(e.target.value)}/>
                             </div>
                             <h3>Current Price: {price}</h3>
                             <h3>Total Price: {parseFloat(price*amount)}</h3>

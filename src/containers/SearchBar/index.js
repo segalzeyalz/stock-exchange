@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as stockActions from './../../constants/stockActions';
 import { connect } from 'react-redux';
 import dataFuncs from './../../constants/dataFuncs';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import CSS from './SearchBar.scss';
 
 class SearchBar extends Component {
@@ -66,10 +66,10 @@ componentDidMount(){
       updatePortfolio: (stocks)=>dispatch({type: stockActions.UPDATE_PORTFOLIO, stocks:stocks})
     }
 }
-SearchBar.PropTypes = {
-    onChange: PropTypes.func,
-    api:PropTypes.string,
-    stocks: PropTypes.array,
-    val: PropTypes.string
+SearchBar.propTypes = {
+    onChange: propTypes.func,
+    api:propTypes.string,
+    stocks: propTypes.array,
+    val: propTypes.string
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
