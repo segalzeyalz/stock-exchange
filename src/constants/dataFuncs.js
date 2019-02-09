@@ -1,7 +1,7 @@
 import axios from 'axios';
 const dataFuncs = {
     fetchPortfolio: (api, self, func)=>{
-        fetch(`${api}/portfolio`)
+        return fetch(`${api}/portfolio`)
         .then(response => response.json())
         .then((portData) => {
             self.portData = portData

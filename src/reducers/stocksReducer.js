@@ -1,4 +1,4 @@
-import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
+import { SEARCH, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
   REMOVE_AVAILABLE, RELOAD } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
@@ -13,14 +13,12 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     let { filteredStocks } = state;
     switch (action.type) {
-        case FILTER_AVAILABLE_STOCKS:
+        case SEARCH:
             //filter from stock 
             return {
                 ...state,
-                filteredStocks:[...action.stocks],
-                lastAvaiableSortedBy:"",
                 filterVal:action.val || state.filterVal,
-                funds: action.funds || state.funds
+                filteredStocks:[...action.stocks]
             }
           case RELOAD:
             return {
@@ -30,7 +28,7 @@ const reducer = (state = initialState, action) => {
               funds:action.funds
             }
           case SORT_AVAILABLE_STOCKS:
-              let {lastAvaiableSortedBy} = state;
+              let { lastAvaiableSortedBy } = state;
               //Ascending and descending sort - when click twice on same val - it opposes
               if(lastAvaiableSortedBy && lastAvaiableSortedBy.filter===action.filterBy){
                 lastAvaiableSortedBy.direction=!lastAvaiableSortedBy.direction

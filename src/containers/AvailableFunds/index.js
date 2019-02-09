@@ -2,47 +2,17 @@ import React, { Component } from 'react';
 import CSS from './AvailableFunds.scss';
 import * as stockActions from './../../constants/stockActions';
 import * as UIActions from './../../constants/UIActions';
-import dataFuncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHeader from './../../components/TableHeader'
 import TableRow from '@material-ui/core/TableRow';
-import SearchBar from './../SearchBar'
+import SearchBar from './../SearchBar';
+import PropTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
-
-    portData;
-    componentDidMount(){
-        //Getting all available stocks
-        let { onReload, api } = this.props;
-        dataFuncs.fetchPortfolio(api,this)
-        dataFuncs.search(api, this.props.filterVal).then(function (response) {
-            let stockArr = response.data.stocks;
-            if(this.portData){
-                let myStock=this.portData.myStocks;
-                //Filter all stocks that bought
-                stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                onReload(stockArr, this.portData.funds);
-        }
-          }.bind(this))
-          //Refresh every 5 seconds
-          setInterval(function() {
-                     dataFuncs.fetchPortfolio(api,this)
-                     dataFuncs.search(api, this.props.filterVal)
-                    .then(function (response) {
-                    let stockArr = response.data.stocks;
-                    if(this.portData){
-                        let myStock=this.portData.myStocks;
-                        //Filter all stocks that bought
-                        stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                        onReload(stockArr, this.portData.funds);
-                    }
-              }.bind(this))
-          }.bind(this),5000)
-    }
 
     render(){
         let { stocks, onFilter } = this.props;
@@ -85,8 +55,14 @@ const mapDispatchToProps = dispatch => {
     return {
       onFilter: (name) => dispatch({type:stockActions.SORT_AVAILABLE_STOCKS, filterBy:name}),
       onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name}),
-      onReload: (stockArr, funds) => dispatch({type:stockActions.FILTER_AVAILABLE_STOCKS, stocks: stockArr, funds:funds}),
     }
 }
-
+AvailableFunds.prototypes = {
+    api:PropTypes.string,
+    stocks:PropTypes.array,
+    filterVal: PropTypes.string,
+    funds: PropTypes.number,
+    onFilter: PropTypes.func,
+    onOpen: PropTypes.func
+}
 export default connect(mapStateToProps, mapDispatchToProps)(AvailableFunds);
