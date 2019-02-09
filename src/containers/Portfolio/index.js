@@ -23,10 +23,13 @@ class Portfolio extends Component {
         let self = this;
         let updatePortfolio = this.props.getPortfolio;
         //Post via API
-        dataFuncs.sell(api, symbol)
+        dataFuncs.sell(api, symbol).then(
         //Update the list
         dataFuncs.portfolioPromise(api).then(function(reponse){
             let params = dataFuncs.getParams(reponse.myStocks)
+            if(params==="market/?symbol="){
+                self.portData.myStocks=[]
+            }
             fetch(`${api}/${params}`)
             .then(res=> res.json())
             .then((data)=>{ 
@@ -34,9 +37,11 @@ class Portfolio extends Component {
                     ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
              }
              updatePortfolio(self.portData)
-                })
+            }
+            )
         })
-    }
+    )
+}
     componentDidMount(){
         let { api } = this.props;
         let self = this;
