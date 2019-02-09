@@ -15,19 +15,31 @@ class Popup extends Component {
     buy(){
         let { api, symbol, amount } = this.props;
         dataFuncs.buy(api, symbol, amount).then(()=>{
-                this.props.removeAvailable(symbol);
-                this.props.closePopup();
+            this.props.removeAvailable(symbol);
+            this.props.closePopup();
             })
+        let self = this;
+        dataFuncs.fetchPortfolio(api, self)
+        dataFuncs.search(api, this.props.filterVal)
+        .then(function (response) {
+            let filteredStocks = response.data.stocks;
+            if(self.portData){
+                let myStock=self.portData.myStocks;
+                //Filter all stocks that bought
+                filteredStocks = dataFuncs.removeDuplicates(filteredStocks, myStock)
+                self.props.onReload(filteredStocks, self.portData.myStocks, self.portData.funds)
+            }
+        })
     }
     componentDidMount(){
         setInterval(()=>{
             let {api, symbol, updatePrice} = this.props;
-            dataFuncs.updatePrice.bind(this)(api,symbol, updatePrice)
+            dataFuncs.updatePrice(api,symbol, updatePrice)
         },5000)
     }
     componentDidUpdate(){
         let {api, symbol, updatePrice} = this.props;
-        dataFuncs.updatePrice.bind(this)(api,symbol, updatePrice)
+        dataFuncs.updatePrice(api,symbol, updatePrice)
     }
     render(){
         let {price, amount, funds, btn, symbol, name} = this.props;
@@ -68,6 +80,7 @@ class Popup extends Component {
             price:state.UI.price,
             funds:state.stocks.funds,
             api:state.stocks.api,
+            filterVal: state.stocks.filterVal
         };
       };
       
@@ -76,7 +89,8 @@ class Popup extends Component {
             removeAvailable: (symbol)=>dispatch({type:stockActions.REMOVE_AVAILABLE, symbol:symbol}),
             closePopup: ()=> dispatch({type: UIActions.CLOSE_POPUP}),
             updateAmount: (amount)=>dispatch({type:UIActions.UPDATE_DETAILS, name: "quantity", val:amount}),
-            updatePrice: (price)=>dispatch({type:UIActions.UPDATE_DETAILS, name:"price", val:price})
+            updatePrice: (price)=>dispatch({type:UIActions.UPDATE_DETAILS, name:"price", val:price}),
+            onReload: (filteredStocks, stocks, funds)=>dispatch({type: stockActions.RELOAD, filteredStocks:filteredStocks, stocks:stocks, funds:funds})
         }
     }
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

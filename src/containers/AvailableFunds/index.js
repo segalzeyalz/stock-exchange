@@ -13,35 +13,38 @@ import SearchBar from './../SearchBar'
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
+    constructor(props){
+        super()
+        this.state = { filterVal:''}
+    }
     portData;
     componentDidMount(){
         //Getting all available stocks
         let { onReload, api } = this.props;
-        let self = this;
-        dataFuncs.fetchPortfolio.bind(this)(api,self)
-        dataFuncs.search(api, this.props.filterVal).then(function (response) {
+        dataFuncs.fetchPortfolio(api,this)
+        dataFuncs.search(api, this.state.filterVal).then(function (response) {
             let stockArr = response.data.stocks;
-            if(self.portData){
-            let myStock=self.portData.myStocks;
-            //Filter all stocks that bought
-            stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-            onReload(self.props.filterVal, stockArr, self.portData.funds);
+            if(this.portData){
+                let myStock=this.portData.myStocks;
+                //Filter all stocks that bought
+                stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
+                onReload(this.state.filterVal, stockArr, this.portData.funds);
         }
-          })
+          }.bind(this))
           //Refresh every 5 seconds
-          setInterval(()=>{
-                     dataFuncs.fetchPortfolio.bind(this)(api,self)
-                     dataFuncs.search(api, this.props.filterVal)
+          setInterval(function() {
+                     dataFuncs.fetchPortfolio(api,this)
+                     dataFuncs.search(api, this.state.filterVal)
                     .then(function (response) {
                     let stockArr = response.data.stocks;
-                    if(self.portData){
-                        let myStock=self.portData.myStocks;
+                    if(this.portData){
+                        let myStock=this.portData.myStocks;
                         //Filter all stocks that bought
                         stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                        onReload(self.props.filterVal, stockArr, self.portData.funds);
+                        onReload(this.state.filterVal, stockArr, this.portData.funds);
                     }
-              })
-          },5000)
+              }.bind(this))
+          }.bind(this),5000)
     }
 
     render(){
@@ -51,6 +54,7 @@ class AvailableFunds extends Component {
                     <div className={CSS.Center}>
                         <h2>My Available Funds: {this.props.funds}</h2>
                     </div>
+                    {/* Show only when srarched */}
                    {this.props.filterVal!=="" && <Table>
                    <TableHeader type={"AvailableFunds"} filters={[{item: "symbol", name: "Symbol"},{item: "name", name: "Name"}, {item: "currentPrice", name: "Price"}]} onFilter={onFilter}/>
                      <TableBody>

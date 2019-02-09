@@ -1,5 +1,5 @@
 import { FILTER_AVAILABLE_STOCKS, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
-  REMOVE_AVAILABLE } from './../constants/stockActions';
+  REMOVE_AVAILABLE, RELOAD } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
@@ -21,6 +21,13 @@ const reducer = (state = initialState, action) => {
                 lastAvaiableSortedBy:"",
                 filterVal:action.val,
                 funds: action.funds || state.funds
+            }
+          case RELOAD:
+            return {
+              ...state,
+              filteredStocks:action.filteredStocks,
+              stocks:action.stocks,
+              funds:action.funds
             }
           case SORT_AVAILABLE_STOCKS:
               let {lastAvaiableSortedBy} = state;
@@ -106,7 +113,7 @@ const reducer = (state = initialState, action) => {
             }
               return {
                 ...state,
-                stocks:sortPortfolioBy,
+                stocks:[...sortPortfolioBy],
                 lastPortfolioSortedBy:lastPortfolioSortedBy
               }
             case REMOVE_AVAILABLE:

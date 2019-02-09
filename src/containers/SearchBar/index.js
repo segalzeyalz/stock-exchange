@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as stockActions from './../../constants/stockActions';
 import { connect } from 'react-redux';
 import dataFuncs from './../../constants/dataFuncs';
-import axios from 'axios';
 import CSS from './SearchBar.scss';
 
 class SearchBar extends Component {
@@ -15,10 +14,9 @@ class SearchBar extends Component {
         let self = this;
         self.val = e.target.value;
         let { onChange, api } = this.props;
-        dataFuncs.fetchPortfolio.bind(this)(api, self)
-        axios.post(`${api}/market/search`,{
-            "searchString": self.val
-          }).then(function (response) {
+        dataFuncs.fetchPortfolio(api, self)
+        //search and remove duplicates
+        dataFuncs.search(api, self.val).then(function (response) {
               if(self.portData){
                 let stockArr = response.data.stocks;
                 let myStock=self.portData.myStocks;
