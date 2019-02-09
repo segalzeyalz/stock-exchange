@@ -55,7 +55,7 @@ const mapStateToProps = state => {
         api:state.stocks.api,
         stocks:state.stocks.filteredStocks,
         filterVal: state.stocks.filterVal,
-        funds:state.stocks.funds
+        funds:state.stocks.funds,
     }
 }
 const mapDispatchToProps = dispatch => {

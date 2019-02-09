@@ -1,13 +1,10 @@
 import axios from 'axios';
 const dataFuncs = {
-    fetchPortfolio: (api, self, func)=>{
+    fetchPortfolio: (api, self)=>{
         return fetch(`${api}/portfolio`)
         .then(response => response.json())
         .then((portData) => {
             self.portData = portData
-            if(func){
-                func()
-            }
         })
     },
     portfolioPromise: (api)=>{
@@ -64,6 +61,27 @@ const dataFuncs = {
         return axios.post(`${api}/market/sell`,{
             "stockSymbol": symbol,
           })
+    },
+    sort:(sortedBy, arr)=>{
+        let sortAvailableBy;
+        function biggerFirst(a,b){
+            if(a>b){
+                return 1;}
+              else if(a<b){
+                return -1;} else{
+                  return 0
+                }
+            }
+        if(sortedBy.direction){
+          sortAvailableBy = [...arr.sort((a,b)=> {
+              return biggerFirst(a[sortedBy.filterBy],b[sortedBy.filterBy])
+            })]
+        } else{
+            sortAvailableBy = [...arr.sort((a,b)=> {
+                return biggerFirst(b[sortedBy.filterBy], a[sortedBy.filterBy])
+              })]
+        }
+        return sortAvailableBy;
     }
 }
 

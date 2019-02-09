@@ -44,7 +44,8 @@ class SearchBar extends Component {
 componentDidMount(){
     let self = this;
     setInterval(()=>{
-        let { updatePortfolio, onChange, api } = this.props;
+        let { updatePortfolio, onChange, api, sortBy } = this.props;
+        
         dataFuncs.portfolioPromise(api).then((portData)=>{
             self.portData=portData;
                 dataFuncs.search(api, self.state.searchVal).then(function (response) {
@@ -60,6 +61,10 @@ componentDidMount(){
                     .then((data)=>{ 
                         for (let i=0;i<data.stocks.length; i++) {
                             ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
+                    }
+                    if(sortBy){
+                        //keep it sorted
+                        self.portData.myStocks = dataFuncs.sort(sortBy,self.portData.myStocks)
                     }
                     updatePortfolio(self.portData)
                 })
@@ -82,8 +87,10 @@ componentDidMount(){
    const mapStateToProps = state => {
         return {
             api:state.stocks.api,
+            filterVal: state.stocks.filterVal,
             stocks:state.stocks.stocks,
-            val: state.stocks.filterVal
+            sortBy: state.stocks.lastAvaiableSortedBy,
+            val: state.stocks.filterVal,
         };
     };
   const mapDispatchToProps = dispatch => {
