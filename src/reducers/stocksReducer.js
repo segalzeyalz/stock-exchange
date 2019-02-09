@@ -1,5 +1,6 @@
 import { SEARCH, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
   REMOVE_AVAILABLE, RELOAD, UPDATE_FUNDS } from './../constants/stockActions';
+  import dataFuncs from './../constants/dataFuncs';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
@@ -38,32 +39,29 @@ const reducer = (state = initialState, action) => {
                   direction:true
                 }
               }
-              let sortAvailableBy;
-              if(lastAvaiableSortedBy.direction){
-                sortAvailableBy = [...filteredStocks.sort((a,b)=> {
-                  if(a[action.filterBy]>b[action.filterBy]){
-                      return 1;}
-                    else if(a[action.filterBy]<b[action.filterBy]){
-                      return -1;} else{
-                        return 0
-                      }
-                  })
-                ]
-              } else{
-                sortAvailableBy = [...filteredStocks.sort((a,b)=> {
-                  if(a[action.filterBy]<b[action.filterBy]){
-                      return 1;}
-                    else if(a[action.filterBy]>b[action.filterBy]){
-                      return -1;} else{
-                        return 0
-                      }
-                  })]
-              }
+              let sortAvailableBy = dataFuncs.sort(lastAvaiableSortedBy,[...state.filteredStocks])
               return {
                 ...state,
                 filteredStocks:sortAvailableBy,
                 lastAvaiableSortedBy:lastAvaiableSortedBy
               }
+              case SORT_PORTFOLIO_STOCKS:
+                let { lastPortfolioSortedBy } = state;
+                //Ascending and descending sort - when click twice on same val - it opposes
+                if(lastPortfolioSortedBy && lastPortfolioSortedBy.filter===action.filterBy){
+                  lastPortfolioSortedBy.direction=!lastPortfolioSortedBy.direction
+                }else{
+                  lastPortfolioSortedBy = {
+                    filter:action.filterBy,
+                    direction:true
+                  }
+                }
+                let sortPortfolioBy = dataFuncs.sort(lastPortfolioSortedBy,[...state.stocks]);
+                return {
+                  ...state,
+                  stocks:sortPortfolioBy,
+                  lastPortfolioSortedBy:lastPortfolioSortedBy
+                }
             case UPDATE_PORTFOLIO:
               let newStocks = action.stocks.myStocks;
               return {
@@ -79,44 +77,6 @@ const reducer = (state = initialState, action) => {
                 "lastPortfolioSortedBy":"",
                 "filterVal":"",
                 "funds":0
-              }
-            case SORT_PORTFOLIO_STOCKS:
-            let SortPortfolioStocks = state.stocks;
-            let { lastPortfolioSortedBy } = state;
-            //Ascending and descending sort - when click twice on same val - it opposes
-            if(lastPortfolioSortedBy && lastPortfolioSortedBy.filter===action.filterBy){
-              lastPortfolioSortedBy.direction=!lastPortfolioSortedBy.direction
-            }else{
-              lastPortfolioSortedBy = {
-                filter:action.filterBy,
-                direction:true
-              }
-            }
-            let sortPortfolioBy;
-            if(lastPortfolioSortedBy.direction){
-              sortPortfolioBy = [...SortPortfolioStocks.sort((a,b)=> {
-                if(a[action.filterBy]>b[action.filterBy]){
-                    return 1;}
-                  else if(a[action.filterBy]<b[action.filterBy]){
-                    return -1;} else{
-                      return 0
-                    }
-                })
-              ]
-            }else{
-              sortPortfolioBy = [...SortPortfolioStocks.sort((a,b)=> {
-                if(a[action.filterBy]<b[action.filterBy]){
-                    return 1;}
-                  else if(a[action.filterBy]>b[action.filterBy]){
-                    return -1;} else{
-                      return 0
-                    }
-                })]
-            }
-              return {
-                ...state,
-                stocks:[...sortPortfolioBy],
-                lastPortfolioSortedBy:lastPortfolioSortedBy
               }
             case REMOVE_AVAILABLE:
                 filteredStocks = [...state.filteredStocks].filter((elem)=>elem.symbol.toLocaleLowerCase().includes(state.filterVal.toLocaleLowerCase()));

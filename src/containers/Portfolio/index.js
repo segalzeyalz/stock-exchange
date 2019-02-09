@@ -59,7 +59,8 @@ class Portfolio extends Component {
              this.props.getPortfolio(self.portData)
                 })
        });
-       setTimeout(() => {
+       setInterval(() => {
+           let { sortBy } = this.props;
             dataFuncs.portfolioPromise(api)
             .then((portData) => {
                 self.portData = portData;
@@ -71,8 +72,12 @@ class Portfolio extends Component {
                     for (let i=0;i<data.stocks.length; i++) {
                         ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
                    }
-                this.props.getPortfolio(self.portData)
-                    })
+                   if(sortBy){
+                    //keep it sorted
+                    self.portData.myStocks = dataFuncs.sort(sortBy,self.portData.myStocks)
+                }
+                    this.props.getPortfolio(self.portData)
+                })
         });
        }, 5000);
     }
@@ -120,8 +125,9 @@ const mapStateToProps = state => {
     return {
         stocks:state.stocks.stocks,
         api:state.stocks.api,
-        funds:state.stocks.funds
-    }
+        funds:state.stocks.funds,
+        sortBy: state.stocks.lastPortfolioSortedBy
+        }
 }
 
 const mapDispatchToProps = dispatch => {

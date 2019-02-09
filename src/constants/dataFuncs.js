@@ -74,11 +74,11 @@ const dataFuncs = {
             }
         if(sortedBy.direction){
           sortAvailableBy = [...arr.sort((a,b)=> {
-              return biggerFirst(a[sortedBy.filterBy],b[sortedBy.filterBy])
+              return biggerFirst(a[sortedBy.filter],b[sortedBy.filter])
             })]
         } else{
             sortAvailableBy = [...arr.sort((a,b)=> {
-                return biggerFirst(b[sortedBy.filterBy], a[sortedBy.filterBy])
+                return biggerFirst(b[sortedBy.filter], a[sortedBy.filter])
               })]
         }
         return sortAvailableBy;
