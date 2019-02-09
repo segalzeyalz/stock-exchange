@@ -1,5 +1,5 @@
 import { SEARCH, SORT_AVAILABLE_STOCKS, SORT_PORTFOLIO_STOCKS, UPDATE_PORTFOLIO, RESET,
-  REMOVE_AVAILABLE, RELOAD } from './../constants/stockActions';
+  REMOVE_AVAILABLE, RELOAD, UPDATE_FUNDS } from './../constants/stockActions';
 const initialState = {
       "stocks": [],
       "filteredStocks":[],
@@ -7,7 +7,7 @@ const initialState = {
       "lastPortfolioSortedBy":"",
       "api":"http://int.v2x.foresightauto.com/stock-exchange-service",
       "filterVal":"",
-      "funds":0
+      "funds":10000
 };
 
 const reducer = (state = initialState, action) => {
@@ -125,6 +125,9 @@ const reducer = (state = initialState, action) => {
                 return {...state,
                   availableStocks:[...removedAvailable]
                 }
+              case UPDATE_FUNDS:
+                return {...state,
+                        funds:action.funds}
 
              default:
               return {...state}

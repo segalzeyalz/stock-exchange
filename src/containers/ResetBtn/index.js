@@ -11,10 +11,11 @@ class ResetBtn extends Component {
     this.reset=this.reset.bind(this)
   }
   reset(){
-    let { api, onReset } = this.props
+    let { api, onReset, updateFunds } = this.props
     dataFuncs.reset(api).then((data)=>{
-    onReset(data.data.stocks)
-  })
+      onReset(data.data.stocks)
+      dataFuncs.portfolioPromise(api).then(response=>updateFunds(response.funds))
+   })
   }
     render(){
         return (
@@ -35,6 +36,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
       onReset: (availableStocks) => dispatch({type:stocksAction.RESET, availableStocks:availableStocks}),
+      updateFunds: (funds) =>dispatch({type:stocksAction.UPDATE_FUNDS, funds:funds})
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ResetBtn);

@@ -45,6 +45,22 @@ class Portfolio extends Component {
              this.props.getPortfolio(self.portData)
                 })
        });
+       setTimeout(() => {
+            dataFuncs.portfolioPromise(api)
+            .then((portData) => {
+                self.portData = portData;
+                //get all stocks symbol for only one api call
+                let params = dataFuncs.getParams(portData.myStocks)
+                fetch(`${api}/${params}`)
+                .then(res=> res.json())
+                .then((data)=>{ 
+                    for (let i=0;i<data.stocks.length; i++) {
+                        UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+                }
+                this.props.getPortfolio(self.portData)
+                    })
+        });
+       }, 5000);
     }
 
 
@@ -89,7 +105,6 @@ class Portfolio extends Component {
 const mapStateToProps = state => {
     return {
         stocks:state.stocks.stocks,
-        filteredPortfolio:state.stocks.filteredPortfolio,
         api:state.stocks.api,
         funds:state.stocks.funds
     }

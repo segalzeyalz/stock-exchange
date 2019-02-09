@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as stockActions from './../../constants/stockActions';
 import { connect } from 'react-redux';
+import UpdatePointer from './../../constants/UpdatePointer';
 import dataFuncs from './../../constants/dataFuncs';
 import propTypes from 'prop-types';
 import CSS from './SearchBar.scss';
@@ -21,11 +22,20 @@ class SearchBar extends Component {
         dataFuncs.portfolioPromise(api).then((portData)=>{
             self.portData=portData;
                 dataFuncs.search(api, self.val).then(function (response) {
+                    let params = dataFuncs.getParams(portData.myStocks)
                     let stockArr = response.data.stocks;
                     let myStock=self.portData.myStocks;
+                    fetch(`${api}/${params}`)
+                    .then(res=> res.json())
+                    .then((data)=>{ 
+                        for (let i=0;i<data.stocks.length; i++) {
+                            UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+                    }})
+                    //get all stocks symbol for only one api call
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
                     onChange(stockArr, self.val)
+                    //To allow the settimeout function to get the updated data
                     self.setState({searchVal:self.val})
               })
         })
@@ -33,7 +43,6 @@ class SearchBar extends Component {
 
 componentDidMount(){
     let self = this;
-    self.val = this.props.val;
     setInterval(()=>{
         let { updatePortfolio, onChange, api } = this.props;
         dataFuncs.portfolioPromise(api).then((portData)=>{
@@ -41,6 +50,20 @@ componentDidMount(){
                 dataFuncs.search(api, self.state.searchVal).then(function (response) {
                     let stockArr = response.data.stocks;
                     let myStock=self.portData.myStocks;
+                dataFuncs.portfolioPromise(api)
+                .then((portData) => {
+                    self.portData = portData;
+                    //get all stocks symbol for only one api call
+                    let params = dataFuncs.getParams(portData.myStocks)
+                    fetch(`${api}/${params}`)
+                    .then(res=> res.json())
+                    .then((data)=>{ 
+                        for (let i=0;i<data.stocks.length; i++) {
+                            UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+                    }
+                    updatePortfolio(self.portData)
+                })
+            });
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
                     onChange(stockArr, self.state.searchVal)
@@ -49,7 +72,6 @@ componentDidMount(){
         })
     },5000)
 }
-
 
     render(){
         return (<div className={CSS.SearchContainer}>
