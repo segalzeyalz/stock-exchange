@@ -29,7 +29,7 @@ class SearchBar extends Component {
                     .then(res=> res.json())
                     .then((data)=>{ 
                         for (let i=0;i<data.stocks.length; i++) {
-                            ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                            ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
                     }})
                     //get all stocks symbol for only one api call
                     //Filter all stocks that bought
@@ -59,7 +59,7 @@ componentDidMount(){
                     .then(res=> res.json())
                     .then((data)=>{ 
                         for (let i=0;i<data.stocks.length; i++) {
-                            ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                            ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
                     }
                     updatePortfolio(self.portData)
                 })

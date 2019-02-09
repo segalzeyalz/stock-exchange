@@ -31,7 +31,7 @@ class Portfolio extends Component {
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<data.stocks.length; i++) {
-                    ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                    ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
              }
              updatePortfolio(self.portData)
                 })
@@ -49,7 +49,7 @@ class Portfolio extends Component {
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<data.stocks.length; i++) {
-                    ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                    ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
              }
              this.props.getPortfolio(self.portData)
                 })
@@ -64,7 +64,7 @@ class Portfolio extends Component {
                 .then(res=> res.json())
                 .then((data)=>{ 
                     for (let i=0;i<data.stocks.length; i++) {
-                        ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                        ((elem1, array)=>UpdatePointer(elem1,array))(self.portData.myStocks[i], data.stocks)
                    }
                 this.props.getPortfolio(self.portData)
                     })

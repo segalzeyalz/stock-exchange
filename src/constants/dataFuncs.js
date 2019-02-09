@@ -38,7 +38,7 @@ const dataFuncs = {
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<stocks.length; i++) {
-                    ((elem1, elem2)=>UpdatePointer(elem1,elem2))(myStocks[i], data.stocks[i])
+                    ((elem1, array)=>UpdatePointer(elem1,array))(myStocks[i], data.stocks)
              }
              getPortfolio(self.portData)
                 })

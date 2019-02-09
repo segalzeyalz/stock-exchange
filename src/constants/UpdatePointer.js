@@ -1,5 +1,8 @@
-const UpdatePointer = (pointerStock, pointerData)=>{
-    if(pointerStock && pointerStock.symbol===pointerData.symbol){
+const UpdatePointer = (pointerStock, array)=>{
+    let pointerData
+    if(pointerStock){
+        pointerData = array.find((elem)=>elem.symbol===pointerStock.symbol)}
+    if(pointerData && pointerStock.symbol===pointerData.symbol){
         pointerStock.name=pointerData.name;
         pointerStock.currentPrice=parseFloat(pointerData.currentPrice).toFixed(3);
         pointerStock.startOfCommerce=pointerData.startOfCommerce

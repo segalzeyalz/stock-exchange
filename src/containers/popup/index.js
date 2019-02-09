@@ -20,19 +20,21 @@ class Popup extends Component {
         let { api, symbol, amount } = this.props;
         dataFuncs.buy(api, symbol, amount).then(()=>{
             this.props.removeAvailable(symbol);
-            this.props.closePopup();
+            let self = this;
+            dataFuncs.fetchPortfolio(api, self)
+            //than update values using the search api
+            dataFuncs.search(api, this.props.filterVal)
+            .then(function (response) {
+                let filteredStocks = response.data.stocks;
+                if(self.portData){
+                    let myStock=self.portData.myStocks;
+                    //Filter all stocks that bought
+                    filteredStocks = dataFuncs.removeDuplicates(filteredStocks, myStock)
+                    self.props.onReload(filteredStocks, self.portData.myStocks, self.portData.funds)
+                }
+                //close after response
+                self.props.closePopup();
             })
-        let self = this;
-        dataFuncs.fetchPortfolio(api, self)
-        dataFuncs.search(api, this.props.filterVal)
-        .then(function (response) {
-            let filteredStocks = response.data.stocks;
-            if(self.portData){
-                let myStock=self.portData.myStocks;
-                //Filter all stocks that bought
-                filteredStocks = dataFuncs.removeDuplicates(filteredStocks, myStock)
-                self.props.onReload(filteredStocks, self.portData.myStocks, self.portData.funds)
-            }
         })
     }
     componentDidMount(){
