@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 filteredStocks:[...action.stocks],
                 lastAvaiableSortedBy:"",
-                filterVal:action.val,
+                filterVal:action.val || state.filterVal,
                 funds: action.funds || state.funds
             }
           case RELOAD:

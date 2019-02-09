@@ -13,35 +13,32 @@ import SearchBar from './../SearchBar'
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
-    constructor(props){
-        super()
-        this.state = { filterVal:''}
-    }
+
     portData;
     componentDidMount(){
         //Getting all available stocks
         let { onReload, api } = this.props;
         dataFuncs.fetchPortfolio(api,this)
-        dataFuncs.search(api, this.state.filterVal).then(function (response) {
+        dataFuncs.search(api, this.props.filterVal).then(function (response) {
             let stockArr = response.data.stocks;
             if(this.portData){
                 let myStock=this.portData.myStocks;
                 //Filter all stocks that bought
                 stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                onReload(this.state.filterVal, stockArr, this.portData.funds);
+                onReload(stockArr, this.portData.funds);
         }
           }.bind(this))
           //Refresh every 5 seconds
           setInterval(function() {
                      dataFuncs.fetchPortfolio(api,this)
-                     dataFuncs.search(api, this.state.filterVal)
+                     dataFuncs.search(api, this.props.filterVal)
                     .then(function (response) {
                     let stockArr = response.data.stocks;
                     if(this.portData){
                         let myStock=this.portData.myStocks;
                         //Filter all stocks that bought
                         stockArr = dataFuncs.removeDuplicates(stockArr, myStock)
-                        onReload(this.state.filterVal, stockArr, this.portData.funds);
+                        onReload(stockArr, this.portData.funds);
                     }
               }.bind(this))
           }.bind(this),5000)
@@ -88,7 +85,7 @@ const mapDispatchToProps = dispatch => {
     return {
       onFilter: (name) => dispatch({type:stockActions.SORT_AVAILABLE_STOCKS, filterBy:name}),
       onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name}),
-      onReload: (val, stockArr, funds) => dispatch({type:stockActions.FILTER_AVAILABLE_STOCKS, val:val, stocks: stockArr, funds:funds}),
+      onReload: (stockArr, funds) => dispatch({type:stockActions.FILTER_AVAILABLE_STOCKS, stocks: stockArr, funds:funds}),
     }
 }
 
