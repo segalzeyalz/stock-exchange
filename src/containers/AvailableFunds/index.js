@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CSS from './AvailableFunds.scss';
+import Funds from './../../components/Funds';
 import * as stockActions from './../../constants/stockActions';
 import * as UIActions from './../../constants/UIActions';
 import { connect } from 'react-redux';
@@ -18,9 +19,7 @@ class AvailableFunds extends Component {
         let { stocks, onFilter } = this.props;
         return (<div className={CSS.AvailableFunds}>
                     <SearchBar/>
-                    <div className={CSS.Center}>
-                        <h2>My Available Funds: {this.props.funds}</h2>
-                    </div>
+                    <Funds funds={this.props.funds}/>
                     {/* Show only when srarched */}
                    {this.props.filterVal!=="" && <Table>
                    <TableHeader type={"AvailableFunds"} filters={[{item: "symbol", name: "Symbol"},{item: "name", name: "Name"}, {item: "currentPrice", name: "Price"}]} onFilter={onFilter}/>
@@ -57,7 +56,7 @@ const mapDispatchToProps = dispatch => {
       onOpen: (symbol, name)=> dispatch({type:UIActions.OPEN_POPUP, Btn:"Buy", symbol:symbol, name:name}),
     }
 }
-AvailableFunds.prototypes = {
+AvailableFunds.PropTypes = {
     api:PropTypes.string,
     stocks:PropTypes.array,
     filterVal: PropTypes.string,

@@ -74,7 +74,11 @@ const reducer = (state = initialState, action) => {
             case RESET:
               return {...state,
                 filteredStocks:action.availableStocks,
-                stocks:[]
+                stocks:[],
+                "lastAvaiableSortedBy":"",
+                "lastPortfolioSortedBy":"",
+                "filterVal":"",
+                "funds":0
               }
             case SORT_PORTFOLIO_STOCKS:
             let SortPortfolioStocks = state.stocks;

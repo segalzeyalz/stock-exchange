@@ -22,7 +22,7 @@ class SearchBar extends Component {
                     let myStock=self.portData.myStocks;
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
-                    onChange(self.val, stockArr)
+                    onChange(stockArr, self.val)
               })
         })
 }
@@ -31,7 +31,7 @@ componentDidMount(){
     let self = this;
     self.val = this.props.val;
     setInterval(()=>{
-        let { onChange, api } = this.props;
+        let { updatePortfolio, onChange, api } = this.props;
         dataFuncs.portfolioPromise(api).then((portData)=>{
             self.portData=portData;
                 dataFuncs.search(api, self.props.val).then(function (response) {
@@ -39,7 +39,8 @@ componentDidMount(){
                     let myStock=self.portData.myStocks;
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
-                    onChange(self.props.val, stockArr)
+                    onChange(stockArr, self.props.val)
+                    updatePortfolio(self.portData)
               })
         })
     },5000)
@@ -61,10 +62,11 @@ componentDidMount(){
     };
   const mapDispatchToProps = dispatch => {
     return {
-      onChange: (val, stockArr) => dispatch({type:stockActions.SEARCH, val:val, stocks: stockArr}),
+      onChange: (stockArr,val) => dispatch({type:stockActions.SEARCH, val:val, stocks: stockArr}),
+      updatePortfolio: (stocks)=>dispatch({type: stockActions.UPDATE_PORTFOLIO, stocks:stocks})
     }
 }
-SearchBar.prototypes = {
+SearchBar.PropTypes = {
     onChange: PropTypes.func,
     api:PropTypes.string,
     stocks: PropTypes.array,

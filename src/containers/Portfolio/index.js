@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as stocksAction from './../../constants/stockActions';
+import Funds from './../../components/Funds';
 import UpdatePointer from './../../constants/UpdatePointer';
 import dataFuncs from './../../constants/dataFuncs';
 import { connect } from 'react-redux';
@@ -21,24 +22,6 @@ class Portfolio extends Component {
         let {api} = this.props;
         dataFuncs.sell(api, symbol)
     }
-    componentWillUpdate(){
-        let { api } = this.props;
-        let self = this;
-        dataFuncs.portfolioPromise(api)
-        .then((portData) => {
-            self.portData = portData;
-            //get all stocks symbol for only one api call
-            let params = dataFuncs.getParams(portData.myStocks)
-            fetch(`${api}/${params}`)
-            .then(res=> res.json())
-            .then((data)=>{ 
-                for (let i=0;i<data.stocks.length; i++) {
-                    UpdatePointer(self.portData.myStocks[i],data.stocks[i])
-             }
-             this.props.getPortfolio(self.portData)
-                })
-       }); 
-    }
     componentDidMount(){
         let { api } = this.props;
         let self = this;
@@ -56,28 +39,13 @@ class Portfolio extends Component {
              this.props.getPortfolio(self.portData)
                 })
        });
-       //Update every 5 seconds
-       setInterval(()=>{
-        if(self.portData){
-            let { myStocks } = self.portData;
-            let params = dataFuncs.getParams(myStocks)
-            fetch(`${api}/${params}`)
-            .then(res=> res.json())
-            .then((data)=>{ 
-                //add more parameters - name, price, startofcommerce
-                for (let i=0;i<data.stocks.length; i++) {
-                UpdatePointer(self.portData.myStocks[i],data.stocks[i])
-            }
-            this.props.getPortfolio(self.portData)})
-        }
-      },5000)
-            
     }
+
 
     render(){
         let { stocks, sortPortfolio } = this.props;
         return (<div className={CSS.Portfolio}>
-                    <div className={CSS.Center}><h2>My Portfolio</h2></div>
+                    <Funds funds={this.props.funds}/>
                    <Table>
                    <TableHeader type={"Portfolio"} filters={[{item: "symbol", name: "Symbol"},{item: "name", name: "Name"},
                        {item: "quantity", name: "Purchased Quantity"},{item: "purchasePrice", name: "Purchase Price"},
@@ -116,7 +84,8 @@ const mapStateToProps = state => {
     return {
         stocks:state.stocks.stocks,
         filteredPortfolio:state.stocks.filteredPortfolio,
-        api:state.stocks.api
+        api:state.stocks.api,
+        funds:state.stocks.funds
     }
 }
 
