@@ -1,5 +1,5 @@
 const UpdatePointer = (pointerStock, pointerData)=>{
-    if(pointerStock){
+    if(pointerStock && pointerStock.symbol===pointerData.symbol){
         pointerStock.name=pointerData.name;
         pointerStock.currentPrice=parseFloat(pointerData.currentPrice).toFixed(3);
         pointerStock.startOfCommerce=pointerData.startOfCommerce

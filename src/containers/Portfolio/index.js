@@ -20,12 +20,21 @@ class Portfolio extends Component {
     }
     sell(symbol){
         let {api} = this.props;
+        let self = this;
         let updatePortfolio = this.props.getPortfolio;
         //Post via API
         dataFuncs.sell(api, symbol)
         //Update the list
         dataFuncs.portfolioPromise(api).then(function(reponse){
-            updatePortfolio(reponse)
+            let params = dataFuncs.getParams(reponse.myStocks)
+            fetch(`${api}/${params}`)
+            .then(res=> res.json())
+            .then((data)=>{ 
+                for (let i=0;i<data.stocks.length; i++) {
+                    ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+             }
+             updatePortfolio(self.portData)
+                })
         })
     }
     componentDidMount(){
@@ -40,7 +49,7 @@ class Portfolio extends Component {
             .then(res=> res.json())
             .then((data)=>{ 
                 for (let i=0;i<data.stocks.length; i++) {
-                    UpdatePointer(self.portData.myStocks[i],data.stocks[i])
+                    ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
              }
              this.props.getPortfolio(self.portData)
                 })
@@ -55,8 +64,8 @@ class Portfolio extends Component {
                 .then(res=> res.json())
                 .then((data)=>{ 
                     for (let i=0;i<data.stocks.length; i++) {
-                        UpdatePointer(self.portData.myStocks[i],data.stocks[i])
-                }
+                        ((elem1, elem2)=>UpdatePointer(elem1,elem2))(self.portData.myStocks[i], data.stocks[i])
+                   }
                 this.props.getPortfolio(self.portData)
                     })
         });

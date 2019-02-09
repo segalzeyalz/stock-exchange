@@ -60,7 +60,7 @@ class Popup extends Component {
                                     onChange={(e)=>this.props.updateAmount(e.target.value)}/>
                             </div>
                             <h3>Current Price: {price}</h3>
-                            <h3>Total Price: {parseFloat(price*amount)}</h3>
+                            <h3>Total Price: {parseFloat(price*amount) || 0}</h3>
                             <div className={CSS.ButtonsContainer}>
                                 <Button onClick={()=>this.buy()}
                                     disabled={parseFloat(price*amount)>funds}
