@@ -21,7 +21,9 @@ class Portfolio extends Component {
     sell(symbol){
         let {api} = this.props;
         let updatePortfolio = this.props.getPortfolio;
+        //Post via API
         dataFuncs.sell(api, symbol)
+        //Update the list
         dataFuncs.portfolioPromise(api).then(function(reponse){
             updatePortfolio(reponse)
         })

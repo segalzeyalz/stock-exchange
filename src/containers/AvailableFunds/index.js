@@ -14,7 +14,6 @@ import propTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 class AvailableFunds extends Component {
-
     render(){
         let { stocks, onFilter } = this.props;
         return (<div className={CSS.AvailableFunds}>

@@ -8,6 +8,9 @@ import CSS from './SearchBar.scss';
 class SearchBar extends Component {
     constructor(){
         super();
+        this.state = {
+            searchVal:''
+        }
         this.onChange = this.onChange.bind(this)
     }
     portData;
@@ -23,6 +26,7 @@ class SearchBar extends Component {
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
                     onChange(stockArr, self.val)
+                    self.setState({searchVal:self.val})
               })
         })
 }
@@ -34,12 +38,12 @@ componentDidMount(){
         let { updatePortfolio, onChange, api } = this.props;
         dataFuncs.portfolioPromise(api).then((portData)=>{
             self.portData=portData;
-                dataFuncs.search(api, self.props.val).then(function (response) {
+                dataFuncs.search(api, self.state.searchVal).then(function (response) {
                     let stockArr = response.data.stocks;
                     let myStock=self.portData.myStocks;
                     //Filter all stocks that bought
                     stockArr = dataFuncs.removeDuplicates(stockArr, myStock);
-                    onChange(stockArr, self.props.val)
+                    onChange(stockArr, self.state.searchVal)
                     updatePortfolio(self.portData)
               })
         })
